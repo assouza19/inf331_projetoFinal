@@ -1,13 +1,13 @@
 # Estrutura de Arquivos e Pastas
 
-A seguir é apresentada a estrutura de pastas esperada para entrega do projeto:
+A seguir é apresentada a estrutura de pastas do projeto:
 
 ~~~
-├── README.md  <- arquivo com o relatório do projeto
+├── README.md 
 │
-├── images     <- arquivos de imagens usadas no documento
+├── images
 │
-└── resources  <- outros recursos (se houver)
+└── resources
 ~~~
 
 # Projeto `MarketPlace`
@@ -21,37 +21,119 @@ A seguir é apresentada a estrutura de pastas esperada para entrega do projeto:
 
 # Nível 1
 
-Apresente aqui o detalhamento do Nível 1 conforme detalhado na especificação com, no mínimo, as seguintes subseções:
+Neste primeiro nível, primeiramente listamos todas as funcionalidades que contemplam o Gerenciamento de Fornecedores em MarketPlace.
+Após esse primeiro levantamento, componentizamos essas funcionalidades de modo que representem módulos do sistema, conforme pode ser visto abaixo:
 
 ## Diagrama Geral do Nível 1
-
-Apresente um diagrama conforme o modelo a seguir:
 
 > ![Modelo de diagrama no nível 1](images/modelo_nivel1.png)
 
 ### Detalhamento da interação de componentes
 
-O detalhamento deve seguir um formato de acordo com o exemplo a seguir:
+Para melhor compreensão das responsabilidades de cada um dos componentes observados acima, realizamos o detalhamento de suas devidas interações, seguindo o fluxo de acontecimento:
 
-* O `componente X` inicia o leilão publicando no barramento a mensagem de tópico "`leilão/<número>/início`" através da interface `Gerente Leilão`, iniciando um leilão.
-* O `componente Y` assina no barramento mensagens de tópico "`leilão/+/início`" através da interface `Participa Leilão`. Quando recebe uma mensagem…
+* Componente `Autenticação`:
+  - Assina:
+    > N/A
+  - Publica:
+    > Responsável por dizer, através da interface recebida `Usuário`, se ele está autorizado ou não a realizar ações no sistema (como finalizar uma compra, cadastrar um produto, visualizar seus pedidos, etc). Essa interface `Usuário` é extendida por duas outras interfaces denominadas `Fornecedor` e `Cliente`. O componente de `Autenticação`, assim que verifica as validações necessárias,
+publica no barramento a mensagem de tópico `/autenticacao/cliente` ou `/autenticacao/fornecedor`, a depender do tipo de usuário enviado;
+    > Publica no barramento a mensagem de tópico `/auditoria/autenticacao` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
 
-Para cada componente será apresentado um documento conforme o modelo a seguir:
 
-## Componente `<Nome do Componente>`
+* Componente `Cliente`:
+  - Assina:
+  > Assina no barramento mensagens de tópico "`/autenticacao/cliente`" através da interface `Autenticação`. Quando recebe a mensagem, se a autenticação tiver sido bem sucedida, o cliente estará logado e poderá prosseguir autenticado. Caso a autenticação tenha falhado, o usuário será redirecionado para uma nova tentativa;
+  - Publica: 
+  > Publica no barramento a mensagem de tópico `/auditoria/cliente` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
 
-> <Resumo do papel do componente e serviços que ele oferece.>
+* Componente `Fornecedor`: 
+  - Assina:
+  > Assina no barramento mensagens de tópico "`/autenticacao/fornecedor`" através da interface `Autenticação`. Quando recebe a mensagem, se a autenticação tiver sido bem sucedida, o fornecedor estará logado e poderá prosseguir autenticado. Caso a autenticação tenha falhado, o fornecedor será redirecionado para uma nova tentativa. 
+  > Assina no barramento mensagens de tópico "`/financeiro/transacoes`" através da interface `Financeiro`. Quando recebe a mensagem, o fornecedor terá acesso aos detalhes financeiros de suas transações dos pedidos solicitados, como: acompanhamento das vendas, acompanhamento das entregas já efetuadas, notas fiscais emitidas, valores a serem repassados, entre outros.
+  - Publica: 
+  > Publica no barramento a mensagem de tópico `/auditoria/fornecedor` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
 
-![Componente](diagrama-componente-mensagens.png)
+* Componente `Produto`:
+  - Assina:
+    > N/A
+  - Publica: 
+    > Publica no barramento mensagens de tópico "`produto/novo`" através da interface `IProduto` sempre que um novo produto é adicionado.
+    > Publica no barramento a mensagem de tópico `/auditoria/produto` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+
+* Componente `Pedido`:
+  - Assina:
+    > N/A
+  - Publica: 
+    > Publica no barramento a mensagem de tópico `/auditoria/pedido` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+
+* Componente `Pagamento`:
+  - Assina:
+    > N/A
+  - Publica: 
+    > Publica no barramento a mensagem de tópico `/auditoria/pagamento` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+
+* Componente `Entrega`:
+  - Assina:
+    > N/A
+  - Publica: 
+    > Publica no barramento a mensagem de tópico `/auditoria/pagamento` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+
+* Componente `Recomendação`:
+  - Assina:
+    > N/A
+  - Publica: 
+    > Publica no barramento a mensagem de tópico `/auditoria/pagamento` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+
+* Componente `Financeiro`:
+  - Assina:
+    > N/A
+  - Publica: 
+    > Publica no barramento a mensagem de tópico `/auditoria/pagamento` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+
+* Componente `Auditoria`:
+  - Assina:
+    > Responsável por assinar o barramento de mensagem de todas as ações que os componentes enviam ("`/auditoria/cliente`", "`/auditoria/fornecedor`", "`/auditoria/produto`", "`/auditoria/pedido`", "`/auditoria/pagamento`", "`/auditoria/entrega`", "`/auditoria/recomendacao`", "`/auditoria/autenticacao`" e "`/auditoria/financeiro`") através da `Interface Registro`. Quando recebe uma mensage, o componente realiza a integração com banco de dados para armazenar o log da ação (dados como: quem fez ação, o que fez, em que data fez) para uma possível auditoria do Sistema;
+  - Publica: 
+    > N/A
+
+Descrição dos componentes:
+
+## Componente `Autenticação`
+
+> Componente responsável pelo processo de autenticação e persistência do Login no MarketPlace. Disponibiliza serviços como: Login, Logout, Recuperar a senha.
+
+![Componente](diagrama-componente-autenticacao.png)
 
 **Interfaces**
-> * Listagem das interfaces do componente.
+> * Interface Autenticação
+> * Interface Usuário
 
 As interfaces listadas são detalhadas a seguir:
 
 ## Detalhamento das Interfaces
 
-### Interface `<nome da interface>`
+### Interface `Autenticação`
+
+> Essa interface é responsável por enviar o status da autenticação;
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+## Interface `Usuário`
 
 > Resumo do papel da interface.
 
@@ -71,51 +153,452 @@ Atributo | Descrição
 -------| --------
 `<nome do atributo>` | `<objetivo do atributo>`
 
-## Exemplo
 
-### Interface DadosPedido
+## Componente `Cliente`
 
-Interface para envio de dados do pedido com itens associados.
+> Este componente é responsável por todo o gerenciamento do Cliente. Serviços como: Manter o cadastro do cliente........
 
-**Tópico**: `pedido/{id}/dados`
+![Componente](diagrama-componente-cliente.png)
+
+**Interfaces**
+> * Interface Autenticação
+> * Interface Cliente
+
+As interfaces listadas são detalhadas a seguir:
+
+## Detalhamento das Interfaces
+
+### Interface `Autenticação`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
 ![Diagrama Classes REST](images/diagrama-classes-rest.png)
 
 ~~~json
-{
-  "number": 16,
-  "duoDate": "2009-10-04",
-  "total": 1937.01,
-  "items": {
-    "item": {
-       "itemid": "1245",
-       "quantity": 1
-    },
-    "item": {
-       "itemid": "1321",
-       "quantity": 1
-    }
-  }  
-}
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
 ~~~
 
 Detalhamento da mensagem JSON:
 
-**Order**
 Atributo | Descrição
 -------| --------
-number | número do pedido
-duoDate | data de vencimento
-total | valor total do pedido
-items | itens do pedido
+`<nome do atributo>` | `<objetivo do atributo>`
 
-**Item**
+## Interface `Cliente`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
 Atributo | Descrição
 -------| --------
-itemid | identificador do item
-quantity | quantidade do item
+`<nome do atributo>` | `<objetivo do atributo>`
+
+
+## Componente `Fornecedor`
+
+> Este componente é responsável por gerenciar o fornecedor. Desde o cadastro, até manter seus dados atualizados.
+
+![Componente](diagrama-componente-fornecedor.png)
+
+**Interfaces**
+> * Interface Fornecedor
+> * Interface Financeiro
+> * Interface Autenticação
+
+As interfaces listadas são detalhadas a seguir:
+
+## Detalhamento das Interfaces
+
+### Interface `Fornecedor`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+### Interface `Financeiro`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+### Interface `Autenticação`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+## Componente `Produto`
+
+> Este componente é responsável por manter os dados do produto, desde o cadastro do mesmo, como categorização......
+
+![Componente](diagrama-componente-produto.png)
+
+**Interfaces**
+> * Interface Produto
+
+A interface listada será detalhada a seguir:
+
+## Detalhamento da Interface
+
+### Interface `Produto`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+## Componente `Pedido`
+
+> Este componente é responsável por todo o fluxo do pedido. Desde quando o cliente encontra o produto desejado, visualiza sua descrição e o coloca no carrinho.
+
+![Componente](diagrama-componente-pedido.png)
+
+**Interfaces**
+> * Interface Pedido
+> * Interface Produto
+> * Interface Fornecedor
+
+As interfaces listadas são detalhadas a seguir:
+
+## Detalhamento das Interfaces
+
+### Interface `Pedido`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+### Interface `Produto`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+### Interface `Fornecedor`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+
+## Componente `Pagamento`
+
+> Este componente é responsável pelo pagamento efetivo do pedido realizado. Dentre os serviços estão: Cálculo de frete, consulta do cadastro do usuário, consulta da instituição financeira responsável pelo pagamento e confirmação do pedido para o componente  de entrega.
+
+![Componente](diagrama-componente-pagamento.png)
+
+**Interfaces**
+> * Interface Pagamento
+> * Interface Pedido
+> * Interface Cliente
+
+As interfaces listadas são detalhadas a seguir:
+
+## Detalhamento das Interfaces
+
+### Interface `Pagamento`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+### Interface `Pedido`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+### Interface `Cliente`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+## Componente `Recomendação`
+
+> <Resumo do papel do componente e serviços que ele oferece.>
+
+![Componente](diagrama-componente-recomendacao.png)
+
+**Interfaces**
+> * Listagem das interfaces do componente.
+
+As interfaces listadas são detalhadas a seguir:
+
+## Detalhamento das Interfaces
+
+### Interface `Cliente`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+## Componente `Entrega`
+
+> <Resumo do papel do componente e serviços que ele oferece.>
+
+![Componente](diagrama-componente-mensagens.png)
+
+**Interfaces**
+> * Listagem das interfaces do componente.
+
+As interfaces listadas são detalhadas a seguir:
+
+## Detalhamento das Interfaces
+
+### Interface `Cliente`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+## Componente `Financeiro`
+
+> <Resumo do papel do componente e serviços que ele oferece.>
+
+![Componente](diagrama-componente-mensagens.png)
+
+**Interfaces**
+> * Listagem das interfaces do componente.
+
+As interfaces listadas são detalhadas a seguir:
+
+## Detalhamento das Interfaces
+
+### Interface `Cliente`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+## Componente `Auditoria`
+
+> <Resumo do papel do componente e serviços que ele oferece.>
+
+![Componente](diagrama-componente-mensagens.png)
+
+**Interfaces**
+> * Listagem das interfaces do componente.
+
+As interfaces listadas são detalhadas a seguir:
+
+## Detalhamento das Interfaces
+
+### Interface `Cliente`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
 
 # Nível 2
 
