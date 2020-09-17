@@ -460,23 +460,108 @@ As interfaces listadas são detalhadas a seguir:
 
 ### Interface `Pedido`
 
-> Resumo do papel da interface.
+> Interface responsável pelo envio do pedido de venda.
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**:
+Assina: `pedido/#` Publica: `pedido/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-pedido.png)
+
+```json
+{
+  "idPedido": 1500,
+  "data": 2020-08-09,
+  "cnpjFornecedor": 23242121233,
+  "idCliente": 3200,
+  "valorTotal": 200.00,
+  "formaDePagamento": "Cartão de Crédito",
+  "produtos": [
+    {
+     "idProduto": "1245",
+	   "valor": 50.00,
+     "quantitidade": 1
+    },
+    {
+     "idProduto": "3323",
+	   "valor": 150.00,
+     "quantitidade": 1
+    },
+  ],
+}
+```
+
+Detalhamento da mensagem JSON:
+
+**Pedido**
+
+| Atributo             | Descrição                |
+| -------------------- | ------------------------ |
+| `idPedido` | `Identificador do pedido` |
+| `data` | `Data da realização do pedido` |
+| `cnpjFornecedor` | `CNPJ do fornecedor que está atendendo o pedido` |
+| `idCliente` | `Identificador do cliente que realizou o pedido` |
+| `valorTotal` | `Valor total do pedido` |
+| `formaDePagamento` | `Forma de pagamento utilizada`
+| `produtos` | `Relação de produtos do pedido` |
+
+**Produto**
+
+Atributo | Descrição
+-------| --------
+`idProduto` | `Identificador do produto`
+`valor` | `Valor do produto`
+`quantidade` | `Quantidade de determinado produto no pedido do cliente`
+
+
+
+### Interface `Cliente`
+
+> Interface responsável por receber os dados do cliente .
+
+**Tópico**: Assina: `cliente/#`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest-cliente.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+  "id": 1290,
+  "nome": "João Carlos Pereira",
+  "documento": "20038924860",
+  "tipoDePessoa": "PF",
+  "endereco": {
+    "logradouro": "Rua 13 de maio, 10",
+    "bairro": "Centro",
+    "cidade": "Itapira",
+    "uf": "SP",
+    "cep": "13970970",
+  },
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
+**Cliente**
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+`id` | `Identificador do cliente`
+`nome` | `Nome do cliente`
+`documento` | `Documento do cliente, podendo ser CPF ou CNPJ`
+`tipoDePessoa` | `Tipo de pessoa, podendo ser PF ou PJ`
+`endereco` | `Informações de endereço do cliente`
+
+**Endereço**
+Atributo | Descrição
+-------| --------
+`logradouro` | `Logradouro do cliente`
+`bairro` | `Bairro do cliente`
+`cidade` | `Cidade do cliente`
+`uf` | `Estado do cliente`
+`cep` | `CEP do cliente`
+
 
 ### Interface `ProdutosEscolhidos`
 
@@ -596,10 +681,10 @@ quantidade | quantidade de determinado produto no pedido do cliente
 
 ### Interface `Pedido`
 
-> Interface responsável pelo envio do pedido de venda.
+> Interface responsável pelo recebimento do pedido de venda.
 
 **Tópico**:
-Publica: `pedido/{id}`
+Assina: `pedido/#`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
