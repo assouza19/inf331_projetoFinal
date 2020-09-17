@@ -250,7 +250,7 @@ Atributo | Descrição
 **Tópico**:  
 Assina: 
 `pedido/{id}/dados` 
-Pulica: 
+Publica: 
 `financeiro/relatorios/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
@@ -260,7 +260,7 @@ Classes que representam objetos JSON associados às mensagens da interface:
 ~~~json
 {
   "idRelatorio": 23421,
-  "cnpj": 232.421.212/33,
+  "cnpj": 23242121233,
   "periodo": {
     "inicio": "2009-10-04",
     "fim": "2009-11-04",
@@ -286,7 +286,7 @@ Detalhamento da mensagem JSON:
 Atributo | Descrição
 -------| --------
 idRelatorio | identificador do relatório
-dnpj | snpj do fornecedor que solicitou o relatorio
+cnpj | cnpj do fornecedor que solicitou o relatorio
 periodo | período a ser considerado para o a construção do relatório
 total | valor total do montante de vendas no período
 produtos | produtos vendidos no período
