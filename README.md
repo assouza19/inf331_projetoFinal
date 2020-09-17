@@ -605,6 +605,65 @@ As interfaces listadas são detalhadas a seguir:
 
 ## Detalhamento das Interfaces
 
+### Interface `Entrega`
+
+> Interface para envio dos detalhes do pafamento.
+
+**Tópico**:  
+Assina: 
+`produto/{id}/dados`
+`cliente/{id}/dados` 
+Publica: 
+`pagamento/{id}/dados`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest-entrega.png)
+
+~~~json
+{
+  "idPagamento": 44323,
+  "cpf": 33242121233,
+  "dataPagamento": "2009-10-04",
+  "valor": 87.66,
+  "formaDePagamento": "Cartao de Credito",
+  "numeroParcelas": 9,
+  "statusPagamento": "Pendente",
+  "produtos": {
+    "produto": {
+       "idProduto": "1245",
+	   "valor": 55.33,
+       "quantitidade": 1
+    },
+    "produto": {
+       "idProduto": "3323",
+	   "valor": 32.33,
+       "quantitidade": 1
+    },
+  }  
+}
+~~~
+
+Detalhamento da mensagem JSON:
+
+**Pagamento**
+Atributo | Descrição
+-------| --------
+idPagamento | identificador do pagamento
+cpf | cpf do cliente
+dataPagamento | data da efetivação do pagamento
+valor | valor total do pedido
+formaDePagamento | forma de pagamento (cartao crédito, débito, boleto, etc)
+numeroParcelas | quantidade de parcelas, caso parcelado, valor default 1
+statusPagamento | status do pagamento (pendente, recusado, finalizado)
+
+**Produto**
+Atributo | Descrição
+-------| --------
+idProduto | identificador do produto
+valor | valor do produto
+quantidade | quantidade de determinado produto no pedido do cliente
+
 ### Interface `Cliente`
 
 > Resumo do papel da interface.
