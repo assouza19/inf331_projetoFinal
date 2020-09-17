@@ -624,29 +624,29 @@ Classes que representam objetos JSON associados às mensagens da interface:
   "codRastreio": 455231,
   "cpf": 33242121233,
   "cep": 12332020,
-  "numero": 233
+  "numero": 233,
   "valor": 12.22,
   "estimativaEntrega": "2009-10-04",
   "produtos": {
     "produto": {
        "idProduto": "1245",
-       "quantitidade": 1
+       "quantitidade": 1,
 	   "dimensoes": {
-			"largura": 22
-			"comprimento": 33
-			"altura": 45
+			"largura": 22,
+			"comprimento": 33,
+			"altura": 45,
 	   }
-	   "peso": 9.22
+	   "peso": 9.22,
     },
     "produto": {
        "idProduto": "3323",
-       "quantitidade": 3
+       "quantitidade": 3,
 	   "dimensoes": {
-			"largura": 11
-			"comprimento": 44
-			"altura": 55
+			"largura": 11,
+			"comprimento": 44,
+			"altura": 55,
 	   }
-	   "peso": 8.12
+	   "peso": 8.12,
     },
   }  
 }
@@ -658,7 +658,7 @@ Detalhamento da mensagem JSON:
 Atributo | Descrição
 -------| --------
 codRastreio | identificador da entrega e codigo de rastreio da entrega para o cliente.
-cpf | cpf do cliente
+cpf | cpf do cliente (destinatario)
 cep | CEP do destino da entrega
 cep | número do destino da entrega
 valor | valor cobrado pela transportadora pelo frete
