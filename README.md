@@ -270,12 +270,12 @@ Classes que representam objetos JSON associados às mensagens da interface:
   "produtos": {
     "produto": {
        "idProduto": "1245",
-	   "valor": 2000.00
+	   "valor": 2000.00,
        "quantitidade": 4
     },
     "produto": {
        "idProduto": "3323",
-	   "valor": 100.00
+	   "valor": 100.00,
        "quantitidade": 2
     },
 	"produto": {
@@ -285,12 +285,12 @@ Classes que representam objetos JSON associados às mensagens da interface:
     },
 	"produto": {
        "idProduto": "9931",
-	   "valor": 200.00
+	   "valor": 200.00,
        "quantitidade": 5
     },
 	"produto": {
        "idProduto": "6633",
-	   "valor": 1500.00
+	   "valor": 1500.00,
        "quantitidade": 2
     },
   }  
@@ -480,18 +480,18 @@ Classes que representam objetos JSON associados às mensagens da interface:
   "cpf": 33242121233,
   "dataPagamento": "2009-10-04",
   "valor": 87.66,
-  "formaDePagamento": "Cartao de Credito"
+  "formaDePagamento": "Cartao de Credito",
   "numeroParcelas": 9,
-  "statusPagamento": "Pendente"
+  "statusPagamento": "Pendente",
   "produtos": {
     "produto": {
        "idProduto": "1245",
-	   "valor": 55.33
+	   "valor": 55.33,
        "quantitidade": 1
     },
     "produto": {
        "idProduto": "3323",
-	   "valor": 32.33
+	   "valor": 32.33,
        "quantitidade": 1
     },
   }  
