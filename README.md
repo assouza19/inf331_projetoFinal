@@ -265,17 +265,33 @@ Classes que representam objetos JSON associados às mensagens da interface:
     "inicio": "2009-10-04",
     "fim": "2009-11-04",
   },
-  "totalVendas": 6733.01,
-  "quantidadeProdutos": 99,
+  "totalVendas": 14200.00,
+  "quantidadeProdutos": 17,
   "produtos": {
     "produto": {
        "idProduto": "1245",
-       "quantitidade": 1
+	   "valor": 2000.00
+       "quantitidade": 4
     },
     "produto": {
-       "idProduto": "1245",
-	   "valor": 32.33
-       "quantitidade": 1
+       "idProduto": "3323",
+	   "valor": 100.00
+       "quantitidade": 2
+    },
+	"produto": {
+       "idProduto": "5555",
+	   "valor": 500.00
+       "quantitidade": 4
+    },
+	"produto": {
+       "idProduto": "9931",
+	   "valor": 200.00
+       "quantitidade": 5
+    },
+	"produto": {
+       "idProduto": "6633",
+	   "valor": 1500.00
+       "quantitidade": 2
     },
   }  
 }
@@ -445,23 +461,70 @@ As interfaces listadas são detalhadas a seguir:
 
 ### Interface `Pagamento`
 
-> Resumo do papel da interface.
+> Interface para envio dos detalhes do pafamento.
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**:  
+Assina: 
+`produto/{id}/dados`
+`cliente/{id}/dados` 
+Publica: 
+`pagamento/{id}/dados`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-pagamento.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+  "idPagamento": 44323,
+  "cpf": 33242121233,
+  "dataPagamento": "2009-10-04",
+  "valor": 87.66,
+  "formaDePagamento": "Cartao de Credito"
+  "numeroParcelas": 9,
+  "statusPagamento": "Pendente"
+  "produtos": {
+    "produto": {
+       "idProduto": "1245",
+	   "valor": 55.33
+       "quantitidade": 1
+    },
+    "produto": {
+       "idProduto": "3323",
+	   "valor": 32.33
+       "quantitidade": 1
+    },
+  }  
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
+**Pagamento**
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+idPagamento | identificador do pagamento
+cpf | cpf do cliente
+dataPagamento | data da efetivação do pagamento
+valor | valor total do pedido
+formaDePagamento | forma de pagamento (cartao crédito, débito, boleto, etc)
+numeroParcelas | quantidade de parcelas, caso parcelado, valor default 1
+statusPagamento | status do pagamento (pendente, recusado, finalizado)
+
+**Produto**
+Atributo | Descrição
+-------| --------
+idProduto | identificador do produto
+valor | valor do produto
+quantidade | quantidade de determinado produto vendida no período
+
+**Produto**
+Atributo | Descrição
+-------| --------
+idProduto | identificador do produto
+valor | valor do produto
+quantidade | quantidade de determinado produto no pedido do cliente
+
 
 ### Interface `Pedido`
 
