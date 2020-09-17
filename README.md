@@ -280,7 +280,7 @@ Classes que representam objetos JSON associados às mensagens da interface:
     },
 	"produto": {
        "idProduto": "5555",
-	   "valor": 500.00
+	   "valor": 500.00,
        "quantitidade": 4
     },
 	"produto": {
