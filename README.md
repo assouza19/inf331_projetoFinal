@@ -243,11 +243,15 @@ Atributo | Descrição
 -------| --------
 `<nome do atributo>` | `<objetivo do atributo>`
 
-### Interface Financeiro
+### Interface `Financeiro`
 
-Interface para envio de relatório financeiro ao fornecedor 
+> Interface para envio de relatório financeiro ao fornecedor.
 
-**Tópico**: `pedido/{id}/dados`
+**Tópico**:  
+Assina: 
+`pedido/{id}/dados` 
+Pulica: 
+`financeiro/relatorios/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -255,44 +259,43 @@ Classes que representam objetos JSON associados às mensagens da interface:
 
 ~~~json
 {
-  "number": 16,
-  "duoDate": "2009-10-04",
-  "total": 1937.01,
-  "items": {
-    "item": {
-       "itemid": "1245",
-       "quantity": 1
+  "idRelatorio": 23421,
+  "cnpj": 232.421.212/33,
+  "periodo": {
+    "inicio": "2009-10-04",
+    "fim": "2009-11-04",
+  },
+  "totalVendas": 1937.01,
+  "quantidadeProdutos": 99,
+  "produtos": {
+    "produto": {
+       "idProduto": "1245",
+       "quantitidade": 1
     },
-    "item": {
-       "itemid": "1321",
-       "quantity": 1
-    }
+    "produto": {
+       "idProduto": "1245",
+       "quantitidade": 1
+    },
   }  
 }
 ~~~
 
 Detalhamento da mensagem JSON:
 
-**Order**
+**Relatório**
 Atributo | Descrição
 -------| --------
-number | número do pedido
-duoDate | data de vencimento
-total | valor total do pedido
-items | itens do pedido
+idRelatorio | identificador do relatório
+dnpj | snpj do fornecedor que solicitou o relatorio
+periodo | período a ser considerado para o a construção do relatório
+total | valor total do montante de vendas no período
+produtos | produtos vendidos no período
 
-**Item**
+**Produto**
 Atributo | Descrição
 -------| --------
-itemid | identificador do item
-quantity | quantidade do item
-
-
-Detalhamento da mensagem JSON:
-
-Atributo | Descrição
--------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+idProduto | identificador do produto.
+quantidade | quantidade de determinado produto vendida no período
 
 ### Interface `Autenticação`
 
