@@ -974,7 +974,7 @@ Classes que representam objetos JSON associados às mensagens da interface:
 	"idUsuario": 122333,
 	"valorTotal": 2233.23,
   },
-  md5: "92e9f1ae8ef91056bf6ba49cd79f0869"
+  "md5": "92e9f1ae8ef91056bf6ba49cd79f0869"
 }
 ~~~
 
