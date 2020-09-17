@@ -26,7 +26,7 @@ Após esse primeiro levantamento, componentizamos essas funcionalidades de modo 
 
 ## Diagrama Geral do Nível 1
 
-> ![Modelo de diagrama no nível 1](images/modelo_nivel1.png)
+> ![Modelo de diagrama no nível 1](images/modelo_nivel_1.png)
 
 ### Detalhamento da interação de componentes
 
@@ -104,6 +104,7 @@ Descrição dos componentes:
 > Componente responsável pelo processo de autenticação e persistência do Login no MarketPlace. Disponibiliza serviços como: Login, Logout, Recuperar a senha.
 
 ![Componente](diagrama-componente-autenticacao.png)
+![AutenticacaoComponent](images/Autenticacao.png)
 
 **Interfaces**
 > * Interface Autenticação
@@ -158,7 +159,7 @@ Atributo | Descrição
 
 > Este componente é responsável por todo o gerenciamento do Cliente. Serviços como: Manter o cadastro do cliente........
 
-![Componente](diagrama-componente-cliente.png)
+![ClienteComponent](images/Cliente.png)
 
 **Interfaces**
 > * Interface Autenticação
@@ -214,6 +215,7 @@ Atributo | Descrição
 > Este componente é responsável por gerenciar o fornecedor. Desde o cadastro, até manter seus dados atualizados.
 
 ![Componente](diagrama-componente-fornecedor.png)
+![FornecedorComponent](images/Fornecedor.png)
 
 **Interfaces**
 > * Interface Fornecedor
@@ -319,7 +321,7 @@ Atributo | Descrição
 
 > Este componente é responsável por manter os dados do produto, desde o cadastro do mesmo, como categorização......
 
-![Componente](diagrama-componente-produto.png)
+![ProdutoComponent](images/Produto.png)
 
 **Interfaces**
 > * Interface Produto
@@ -353,6 +355,7 @@ Atributo | Descrição
 > Este componente é responsável por todo o fluxo do pedido. Desde quando o cliente encontra o produto desejado, visualiza sua descrição e o coloca no carrinho.
 
 ![Componente](diagrama-componente-pedido.png)
+![PedidoComponent](images/Pedido.png)
 
 **Interfaces**
 > * Interface Pedido
@@ -429,6 +432,7 @@ Atributo | Descrição
 > Este componente é responsável pelo pagamento efetivo do pedido realizado. Dentre os serviços estão: Cálculo de frete, consulta do cadastro do usuário, consulta da instituição financeira responsável pelo pagamento e confirmação do pedido para o componente  de entrega.
 
 ![Componente](diagrama-componente-pagamento.png)
+![PagamentoComponent](images/Pagamento.png)
 
 **Interfaces**
 > * Interface Pagamento
@@ -503,7 +507,7 @@ Atributo | Descrição
 
 > <Resumo do papel do componente e serviços que ele oferece.>
 
-![Componente](diagrama-componente-recomendacao.png)
+![RecomendacaoComponent](images/Recomendacao.png)
 
 **Interfaces**
 > * Listagem das interfaces do componente.
@@ -536,7 +540,7 @@ Atributo | Descrição
 
 > <Resumo do papel do componente e serviços que ele oferece.>
 
-![Componente](diagrama-componente-mensagens.png)
+![EntregaComponent](images/Entrega.png)
 
 **Interfaces**
 > * Listagem das interfaces do componente.
@@ -602,7 +606,7 @@ Atributo | Descrição
 
 > <Resumo do papel do componente e serviços que ele oferece.>
 
-![Componente](diagrama-componente-mensagens.png)
+![AuditoriaComponent](images/Auditoria.png)
 
 **Interfaces**
 > * Listagem das interfaces do componente.
