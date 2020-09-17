@@ -1190,6 +1190,7 @@ Classes que representam objetos JSON associados às mensagens da interface:
 {
   "idAuditoria": 23421,
   "infos": {
+	"operação": "Compra",
 	"quandidadeProdutos" : 2,
 	"idUsuario": 122333,
 	"valorTotal": 2233.23,
@@ -1205,7 +1206,7 @@ Detalhamento da mensagem JSON:
 Atributo | Descrição
 -------| --------
 idAuditoria | identificador do arquivo de auditoria
-infos |  detalhes do pedido sendo auditado
+infos |  detalhes da operação sendo auditadq
 md5 |  hash do arquivo de log da operação
 isValidado | resultado da auditoria (true se sucesso, false caso contrarío)
 
