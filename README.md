@@ -516,13 +516,6 @@ Atributo | Descrição
 -------| --------
 idProduto | identificador do produto
 valor | valor do produto
-quantidade | quantidade de determinado produto vendida no período
-
-**Produto**
-Atributo | Descrição
--------| --------
-idProduto | identificador do produto
-valor | valor do produto
 quantidade | quantidade de determinado produto no pedido do cliente
 
 
