@@ -514,6 +514,42 @@ Atributo | Descrição
 `valor` | `Valor do produto`
 `quantidade` | `Quantidade de determinado produto no pedido do cliente`
 
+### Interface `ProdutosEscolhidos`
+
+> Interface responsável por receber os produtos recomendados do leilão 
+
+**Tópico**: Assina: `recomendacao/pedido/#`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest-recomendacao.png)
+
+~~~json
+{
+  "idPedido": 1340,
+  "produtos": [
+    {
+     "idProduto": "1245",
+	   "valor": 50.00,
+     "quantitidade": 1,
+     "idFornecedor": 302
+    },
+    {
+     "idProduto": "3323",
+	   "valor": 150.00,
+     "quantitidade": 1,
+     "idFornecedor": 502
+    },
+  ],
+}
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`idPedido` | `Identificador do pedido de venda`
+`produtos` | `Relação de produtos escolhidos`
 
 
 ### Interface `Cliente`
@@ -561,47 +597,6 @@ Atributo | Descrição
 `cidade` | `Cidade do cliente`
 `uf` | `Estado do cliente`
 `cep` | `CEP do cliente`
-
-
-### Interface `ProdutosEscolhidos`
-
-> Resumo do papel da interface.
-
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
-
-Classes que representam objetos JSON associados às mensagens da interface:
-
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
-
-~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
-~~~
-
-Detalhamento da mensagem JSON:
-
-Atributo | Descrição
--------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
-
-### Interface `Cliente`
-
-> Resumo do papel da interface.
-
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
-
-Classes que representam objetos JSON associados às mensagens da interface:
-
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
-
-~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
-~~~
-
-Detalhamento da mensagem JSON:
-
-Atributo | Descrição
--------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
 
 
 ## Componente `Pagamento`
