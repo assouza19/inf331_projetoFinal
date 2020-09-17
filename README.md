@@ -1138,25 +1138,41 @@ timestamp | timestamp com a hora exata do pedido
 infos |  detalhes do pedido sendo auditado
 md5 |  hash do arquivo de log da operação
 
+
 ### Interface `Auditoria`
 
-> Resumo do papel da interface.
+> Interface para publicação do resultado da auditoria da operação
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**:  
+Publica: 
+`auditoria/{id}/dados` 
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-auditoria.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+  "idAuditoria": 23421,
+  "infos": {
+	"quandidadeProdutos" : 2,
+	"idUsuario": 122333,
+	"valorTotal": 2233.23,
+  },
+  "md5": "92e9f1ae8ef91056bf6ba49cd79f0869",
+  "isValidado": TRUE
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
+**Registro**
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+idAuditoria | identificador do arquivo de auditoria
+infos |  detalhes do pedido sendo auditado
+md5 |  hash do arquivo de log da operação
+isValidado | resultado da auditoria (true se sucesso, false caso contrarío)
 
 # Nível 2
 
