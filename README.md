@@ -955,23 +955,32 @@ As interfaces listadas são detalhadas a seguir:
 
 ### Interface `Registro`
 
-> Resumo do papel da interface.
+> Interface para aquisição de logs para auditoria.
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**:  
+Assina: 
+`pedido/{id}/dados` 
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-registro.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+  "idRegistro": 23421,
+  "timestamp": "2012-01-19 03:14:07",
+  "infos": String[]
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
+**Registro**
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+idRegistro | identificador do registro
+timestamp | timestamp com a hora exata do pedido
+infos | vetor de strings com os detalhes do pedido para auditoria
 
 ### Interface `Auditoria`
 
