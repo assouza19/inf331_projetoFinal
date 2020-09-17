@@ -1154,7 +1154,7 @@ Classes que representam objetos JSON associados às mensagens da interface:
   "idRegistro": 23421,
   "timestamp": "2012-01-19 03:14:07",
   "infos": {
-	"operação": "Compra"
+	"operação": "Compra",
 	"quandidadeProdutos" : 2,
 	"idUsuario": 122333,
 	"valorTotal": 2233.23,
@@ -1195,7 +1195,7 @@ Classes que representam objetos JSON associados às mensagens da interface:
 	"valorTotal": 2233.23,
   },
   "md5": "92e9f1ae8ef91056bf6ba49cd79f0869",
-  "isValidado": TRUE,
+  "isValidado": "TRUE",
 }
 ~~~
 
