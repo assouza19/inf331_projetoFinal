@@ -611,10 +611,9 @@ As interfaces listadas são detalhadas a seguir:
 
 **Tópico**:  
 Assina: 
-`produto/{id}/dados`
-`cliente/{id}/dados` 
+`pedido/{id}/dados`
 Publica: 
-`pagamento/{id}/dados`
+`etrega/{id}/dados`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -622,23 +621,32 @@ Classes que representam objetos JSON associados às mensagens da interface:
 
 ~~~json
 {
-  "idPagamento": 44323,
+  "codRastreio": 455231,
   "cpf": 33242121233,
-  "dataPagamento": "2009-10-04",
-  "valor": 87.66,
-  "formaDePagamento": "Cartao de Credito",
-  "numeroParcelas": 9,
-  "statusPagamento": "Pendente",
+  "cep": 12332020,
+  "numero": 233
+  "valor": 12.22,
+  "estimativaEntrega": "2009-10-04",
   "produtos": {
     "produto": {
        "idProduto": "1245",
-	   "valor": 55.33,
        "quantitidade": 1
+	   "dimensoes": {
+			"largura": 22
+			"comprimento": 33
+			"altura": 45
+	   }
+	   "peso": 9.22
     },
     "produto": {
        "idProduto": "3323",
-	   "valor": 32.33,
-       "quantitidade": 1
+       "quantitidade": 3
+	   "dimensoes": {
+			"largura": 11
+			"comprimento": 44
+			"altura": 55
+	   }
+	   "peso": 8.12
     },
   }  
 }
@@ -649,20 +657,21 @@ Detalhamento da mensagem JSON:
 **Pagamento**
 Atributo | Descrição
 -------| --------
-idPagamento | identificador do pagamento
+codRastreio | identificador da entrega e codigo de rastreio da entrega para o cliente.
 cpf | cpf do cliente
-dataPagamento | data da efetivação do pagamento
-valor | valor total do pedido
-formaDePagamento | forma de pagamento (cartao crédito, débito, boleto, etc)
-numeroParcelas | quantidade de parcelas, caso parcelado, valor default 1
-statusPagamento | status do pagamento (pendente, recusado, finalizado)
+cep | CEP do destino da entrega
+cep | número do destino da entrega
+valor | valor cobrado pela transportadora pelo frete
+estimativaEntrega | data estimada para a entrega
 
 **Produto**
 Atributo | Descrição
 -------| --------
 idProduto | identificador do produto
 valor | valor do produto
-quantidade | quantidade de determinado produto no pedido do cliente
+quantidade | quantidade de determinado produto no pedido de entrega
+dimensões | dimensões do produto em cm
+peso | peso do produto em Kg
 
 ### Interface `Cliente`
 
