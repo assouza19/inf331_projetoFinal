@@ -288,8 +288,8 @@ Atributo | Descrição
 idRelatorio | identificador do relatório
 cnpj | cnpj do fornecedor que solicitou o relatorio
 periodo | período a ser considerado para o a construção do relatório
-total | valor total do montante de vendas no período
-produtos | produtos vendidos no período
+totalVendas | valor total do montante de vendas no período
+QuantidadeProdutos | quantidade produtos vendidos no período
 
 **Produto**
 Atributo | Descrição
