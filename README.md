@@ -255,7 +255,7 @@ Publica:
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-relatorio-financeiro.png)
 
 ~~~json
 {
@@ -307,7 +307,7 @@ quantidade | quantidade de determinado produto vendida no período
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest-relatorio-financeiro.png)
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
 
 ~~~json
 <Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
