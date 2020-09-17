@@ -646,25 +646,77 @@ As interfaces listadas são detalhadas a seguir:
 
 ## Detalhamento das Interfaces
 
-### Interface `Cliente`
+### Interface `Financeiro`
 
-> Resumo do papel da interface.
+> Interface para envio de relatório financeiro ao fornecedor.
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**:  
+Assina: 
+`pedido/{id}/dados` 
+Publica: 
+`financeiro/relatorios/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-relatorio-financeiro.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+  "idRelatorio": 23421,
+  "cnpj": 23242121233,
+  "periodo": {
+    "inicio": "2009-10-04",
+    "fim": "2009-11-04",
+  },
+  "totalVendas": 14200.00,
+  "quantidadeProdutos": 17,
+  "produtos": {
+    "produto": {
+       "idProduto": "1245",
+	   "valor": 2000.00,
+       "quantitidade": 4
+    },
+    "produto": {
+       "idProduto": "3323",
+	   "valor": 100.00,
+       "quantitidade": 2
+    },
+	"produto": {
+       "idProduto": "5555",
+	   "valor": 500.00,
+       "quantitidade": 4
+    },
+	"produto": {
+       "idProduto": "9931",
+	   "valor": 200.00,
+       "quantitidade": 5
+    },
+	"produto": {
+       "idProduto": "6633",
+	   "valor": 1500.00,
+       "quantitidade": 2
+    },
+  }  
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
+**Relatório Financeiro**
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+idRelatorio | identificador do relatório
+cnpj | cnpj do fornecedor que solicitou o relatorio
+periodo | período a ser considerado para o a construção do relatório
+totalVendas | valor total do montante de vendas no período
+quantidadeProdutos | quantidade produtos vendidos no período
+
+**Produto**
+Atributo | Descrição
+-------| --------
+idProduto | identificador do produto
+valor | valor do produto
+quantidade | quantidade de determinado produto vendida no período
 
 ## Componente `Auditoria`
 
