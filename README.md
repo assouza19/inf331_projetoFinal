@@ -36,59 +36,71 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
   - Assina:
     > N/A
   - Publica:
-    > * Responsável por dizer, através da interface recebida `Usuário`, se ele está autorizado ou não a realizar ações no sistema (como finalizar uma compra, cadastrar um produto, visualizar seus pedidos, etc). Essa interface `Usuário` é extendida por duas outras interfaces denominadas `Fornecedor` e `Cliente`. O componente de `Autenticação`, assim que verifica as validações necessárias, publica no barramento a mensagem de tópico `/autenticacao/cliente` ou `/autenticacao/fornecedor`, a depender do tipo de usuário enviado;
-    > * Publica no barramento a mensagem de tópico `/auditoria/autenticacao` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+    > * Responsável por dizer, através da interface recebida `Usuário`, se ele está autorizado ou não a realizar ações no sistema (como finalizar uma compra, cadastrar um produto, visualizar seus pedidos, etc). Essa interface `Usuário` é extendida por duas outras interfaces denominadas `Fornecedor` e `Cliente`. O componente de `Autenticação`, assim que verifica as validações necessárias, publica no barramento a mensagem de tópico `/autenticacao/cliente/{id}` ou `/autenticacao/fornecedor/{id}`, a depender do tipo de usuário enviado;
+    > * Publica no barramento a mensagem de tópico `/auditoria/autenticacao/{id}/{acao}` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
 
 
 * Componente `Cliente`:
   - Assina:
-  > Assina no barramento mensagens de tópico "`/autenticacao/cliente`" através da interface `Autenticação`. Quando recebe a mensagem, se a autenticação tiver sido bem sucedida, o cliente estará logado e poderá prosseguir autenticado. Caso a autenticação tenha falhado, o usuário será redirecionado para uma nova tentativa;
+  > * Assina no barramento mensagens de tópico "`/autenticacao/cliente/{id}`" através da interface `Autenticação`. Quando recebe a mensagem, se a autenticação tiver sido bem sucedida, o cliente estará logado e poderá prosseguir autenticado. Caso a autenticação tenha falhado, o usuário será redirecionado para uma nova tentativa;
   - Publica: 
-  > Publica no barramento a mensagem de tópico `/auditoria/cliente` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+  > * Publica no barramento a mensagem de tópico "`/cliente/{id}`" ao logar no MarketPlace através da interface `Cliente`, permitindo a persistência dos dados;
+  > * Publica no barramento a mensagem de tópico "`/auditoria/cliente/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação do usuário, como por exemplo, alteração dos dados cadastrais, alteração de senha, etc.
 
 * Componente `Fornecedor`: 
   - Assina:
-  > Assina no barramento mensagens de tópico "`/autenticacao/fornecedor`" através da interface `Autenticação`. Quando recebe a mensagem, se a autenticação tiver sido bem sucedida, o fornecedor estará logado e poderá prosseguir autenticado. Caso a autenticação tenha falhado, o fornecedor será redirecionado para uma nova tentativa. 
-  > Assina no barramento mensagens de tópico "`/financeiro/transacoes`" através da interface `Financeiro`. Quando recebe a mensagem, o fornecedor terá acesso aos detalhes financeiros de suas transações dos pedidos solicitados, como: acompanhamento das vendas, acompanhamento das entregas já efetuadas, notas fiscais emitidas, valores a serem repassados, entre outros.
+  > * Assina no barramento mensagens de tópico "`/autenticacao/fornecedor/{id}`" através da interface `Autenticação`. Quando recebe a mensagem, se a autenticação tiver sido bem sucedida, o fornecedor estará logado e poderá prosseguir autenticado. Caso a autenticação tenha falhado, o fornecedor será redirecionado para uma nova tentativa. 
+  > * Assina no barramento mensagens de tópico "`/financeiro/transacoes`" através da interface `Financeiro`. Quando recebe a mensagem, o fornecedor terá acesso aos detalhes financeiros de suas transações dos pedidos como: acompanhamento das vendas, acompanhamento das entregas já efetuadas, notas fiscais emitidas, valores a serem repassados, entre outros.
+  > * Assina no barramento mensagens de tópico "`/leilao/{id}/{idProduto}`" através da interface `Participa Leilão`. Quando recebe a mensagem, o fornecedor verificará os dados do produto requerido, sua disponibilidade em seu estoque e, caso haja interesse, fornecer uma oferta.
   - Publica: 
-  > Publica no barramento a mensagem de tópico `/auditoria/fornecedor` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+  > * Publica no barramento a mensagem de tópico "`/fornecedor/{id}`" através da interface `Fornecedor` onde, quem assinar esse tópico, poderá ter acesso as informações do fornecedor.
+  > * Publica no barramento a mensagem de tópico "`/leilao/{id}/{idFornecedor}/{oferta}`" através da interface `Leilão` onde o componente `Recomendação` poderá ter acesso a sua oferta ou recusa do leilão.
+  > * Publica no barramento a mensagem de tópico "`/auditoria/fornecedor/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação do fornecedor, como por exemplo, cadastrar uma nova filial, mudar a razão social, etc.
 
 * Componente `Produto`:
   - Assina:
-    > N/A
+    > * Assina no barramento mensagens de tópico "`/fornecedor/{id}`" através da interface `Fornecedor`. Quando ele recebe a mensagem, as informações do fornecedor são armazenadas e utilizadas em operações dos subcomponentes do componente `Produto`, como por exemplo, cadastrar um novo produto.
   - Publica: 
-    > Publica no barramento mensagens de tópico "`produto/novo`" através da interface `IProduto` sempre que um novo produto é adicionado.
-    > Publica no barramento a mensagem de tópico `/auditoria/produto` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+    > * Publica no barramento mensagens de tópico "`/produto/{id}`" através da interface `Produto` sempre que um novo produto é adicionado ao carrinho.
+    > * Publica no barramento mensagens de tópico "`/auditoria/produto/{id}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação com este produto como mudança de preço, mudança nos detalhes do produto ou quaisquer outras alterações pertinentes ao produto.
 
 * Componente `Pedido`:
   - Assina:
-    > N/A
+    > * Assina no barramento mensagens de tópico "`/produto/{id}`" através da interface `Produtos Escolhidos`. Toda vez que ele recebe essa mensagem, ele armazena o produto selecionado.
+    > * Assina no barramento mensagens de tópico "`/cliente/{id}`" através da interface `Cliente`, que é onde os dados estão persistidos. Quando ele recebe a mensagem, ele relaciona o `{id}` do Cliente com o `{id}` dos fornecedores responsáveis pelos produtos selecionados que constam na interface `Produtos Escolhidos`.
   - Publica: 
-    > Publica no barramento a mensagem de tópico `/auditoria/pedido` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+    > * Publica no barramento a mensagem de tópico "`/pedido/{id}`" através da interface `Pedido` sempre que um novo pedido é efetuado.
+    > * Publica no barramento a mensagem de tópico "`/auditoria/pedido/{id}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação com o pedido em questão (mudança de status).
 
 * Componente `Pagamento`:
   - Assina:
-    > N/A
+    > * Assina no barramento mensagens de tópico "`/pedido/{id}`" através da interface `Pedido`. Quando recebe a mensagem, inicializa o processo de realizar o pagamento do pedido em questão.
+    > * Assina no barramento mensagens de tópico "`/cliente/{id}`" através da interface `Cliente`, que é onde os dados estão persistidos. Quando ele recebe a mensagem, ele relaciona os dados cadastrais do cliente no pedido, porém, dando a possibilidade do cliente mudá-lo caso necessário, por exemplo, quando o pagamento será realizado por outra pessoa que não o próprio cliente.
   - Publica: 
-    > Publica no barramento a mensagem de tópico `/auditoria/pagamento` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+    > * Publica no barramento a mensagem de tópico "`/pagamento/pedido/{id}`" através da interface `Pagamento` para notificar o componente `Entrega` do novo pedido, caso tenha sido bem sucedido.
+    > * Publica no barramento a mensagem de tópico "`/auditoria/pagamento/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação neste componente, como por exemplo, pagamento recusado, pagamento em análise, pagamento estornado, etc.
 
 * Componente `Entrega`:
   - Assina:
-    > N/A
+    > * Assina no barramento mensagens de tópico "`/pagamento/pedido/{id}`" através da interface `Pagamento`. Quando recebe a mensagem, inicializa o processo de `Entrega` dos produtos selecionados.
   - Publica: 
-    > Publica no barramento a mensagem de tópico `/auditoria/pagamento` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+    > * Publica no barramento as mensagens de tópico "`/entrega/{id}`" através da interface `Entrega` sempre que houver uma mudança no status do pedido.
+    > * Publica no barramento a mensagem de tópico "`/auditoria/entrega/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação no componente de `Entrega`.
 
 * Componente `Recomendação`:
   - Assina:
-    > N/A
+    > * Assina no barramento mensagens de tópico "`/produto/{id}`" através da interface `Produto`, que é disparado no momento em que o usuário define qual produto deseja adquirir, iniciando assim, o processo de leilão. Quando recebe a mensagem, o componente `Recomendação` informa todos os potenciais fornecedores do produto o interesse do cliente.
+    > * Assina no barramento mensagens de tópico "`/leilao/{id}/{idFornecedor}/{oferta}`" através da interface `Participa Leilão` . Quando recebe uma mensagem, o componente `Recomendação` realiza o rankeamento dos fornecedores com base na oferta e no histórico dos mesmos.
   - Publica: 
-    > Publica no barramento a mensagem de tópico `/auditoria/pagamento` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+    > * Publica no barramento a mensagem de tópico "`/leilao/{id}/{idProduto}`" através da interface `Participa Leilão` para que o componente `Fornecedor` que tiver interesse seja notificado do leilão.
+    > * Publica no barramento a mensagem de tópico "`/leilao/{id}`" através da interface `Recomendados` o Rankeamento que será disponibilizado na camada de apresentação para o cliente solicitante.
+    > * Publica no barramento a mensagem de tópico "`/auditoria/recomendacao/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
 
 * Componente `Financeiro`:
   - Assina:
     > N/A
   - Publica: 
-    > Publica no barramento a mensagem de tópico `/auditoria/pagamento` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+    > Publica no barramento a mensagem de tópico "`/auditoria/financeiro/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
 
 * Componente `Auditoria`:
   - Assina:
@@ -218,6 +230,8 @@ Atributo | Descrição
 > * Interface Fornecedor
 > * Interface Financeiro
 > * Interface Autenticação
+> * Interface Leilão
+> * Interface ParticipaLeilão
 
 As interfaces listadas são detalhadas a seguir:
 
@@ -335,6 +349,46 @@ Atributo | Descrição
 -------| --------
 `<nome do atributo>` | `<objetivo do atributo>`
 
+### Interface `Leilão`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+### Interface `ParticipaLeilão`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
 ## Componente `Produto`
 
 > Este componente é responsável por manter os dados do produto, desde o cadastro do mesmo, como categorização......
@@ -343,12 +397,33 @@ Atributo | Descrição
 
 **Interfaces**
 > * Interface Produto
+> * Interface Fornecedor
 
 A interface listada será detalhada a seguir:
 
 ## Detalhamento da Interface
 
 ### Interface `Produto`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+### Interface `Fornecedor`
 
 > Resumo do papel da interface.
 
@@ -376,8 +451,8 @@ Atributo | Descrição
 
 **Interfaces**
 > * Interface Pedido
-> * Interface Produto
-> * Interface Fornecedor
+> * Interface ProdutosEscolhidos
+> * Interface Cliente
 
 As interfaces listadas são detalhadas a seguir:
 
@@ -403,7 +478,7 @@ Atributo | Descrição
 -------| --------
 `<nome do atributo>` | `<objetivo do atributo>`
 
-### Interface `Produto`
+### Interface `ProdutosEscolhidos`
 
 > Resumo do papel da interface.
 
@@ -423,7 +498,7 @@ Atributo | Descrição
 -------| --------
 `<nome do atributo>` | `<objetivo do atributo>`
 
-### Interface `Fornecedor`
+### Interface `Cliente`
 
 > Resumo do papel da interface.
 
@@ -566,13 +641,76 @@ Atributo | Descrição
 ![RecomendacaoComponent](images/Recomendacao.png)
 
 **Interfaces**
-> * Listagem das interfaces do componente.
+> * Interface Produto
+> * Interface Recomendados
+> * Interface Leilão
+> * Interface ParticipaLeilão
 
 As interfaces listadas são detalhadas a seguir:
 
 ## Detalhamento das Interfaces
 
-### Interface `Cliente`
+### Interface `Produto`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+### Interface `Recomendados`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+### Interface `Leilão`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+### Interface `ParticipaLeilão`
 
 > Resumo do papel da interface.
 
@@ -599,7 +737,8 @@ Atributo | Descrição
 ![EntregaComponent](images/Entrega.png)
 
 **Interfaces**
-> * Listagem das interfaces do componente.
+> * Interface Pagamento
+> * Interface Entrega
 
 As interfaces listadas são detalhadas a seguir:
 
@@ -607,7 +746,7 @@ As interfaces listadas são detalhadas a seguir:
 
 ### Interface `Entrega`
 
-> Interface para envio dos detalhes do pafamento.
+> Interface para envio dos produtos efetivamente comprados.
 
 **Tópico**:  
 Assina: 
@@ -673,7 +812,7 @@ quantidade | quantidade de determinado produto no pedido de entrega
 dimensões | dimensões do produto em cm
 peso | peso do produto em Kg
 
-### Interface `Cliente`
+### Interface `Pagamento`
 
 > Resumo do papel da interface.
 
@@ -701,7 +840,8 @@ Atributo | Descrição
 
 
 **Interfaces**
-> * Listagem das interfaces do componente.
+> * Interface Pagamento
+> * Interface Financeiro
 
 As interfaces listadas são detalhadas a seguir:
 
@@ -779,6 +919,26 @@ idProduto | identificador do produto
 valor | valor do produto
 quantidade | quantidade de determinado produto vendida no período
 
+### Interface `Pagamento`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
 ## Componente `Auditoria`
 
 > <Resumo do papel do componente e serviços que ele oferece.>
@@ -786,13 +946,34 @@ quantidade | quantidade de determinado produto vendida no período
 ![AuditoriaComponent](images/Auditoria.png)
 
 **Interfaces**
-> * Listagem das interfaces do componente.
+> * Interface Registro
+> * Interface Auditoria
 
 As interfaces listadas são detalhadas a seguir:
 
 ## Detalhamento das Interfaces
 
-### Interface `Cliente`
+### Interface `Registro`
+
+> Resumo do papel da interface.
+
+**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+
+Classes que representam objetos JSON associados às mensagens da interface:
+
+![Diagrama Classes REST](images/diagrama-classes-rest.png)
+
+~~~json
+<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+~~~
+
+Detalhamento da mensagem JSON:
+
+Atributo | Descrição
+-------| --------
+`<nome do atributo>` | `<objetivo do atributo>`
+
+### Interface `Auditoria`
 
 > Resumo do papel da interface.
 
