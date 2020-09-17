@@ -969,7 +969,12 @@ Classes que representam objetos JSON associados às mensagens da interface:
 {
   "idRegistro": 23421,
   "timestamp": "2012-01-19 03:14:07",
-  "infos": String[]
+  "infos": {
+	"quandidadeProdutos" : 2,
+	"idUsuario": 122333,
+	"valorTotal": 2233.23,
+  },
+  md5: "92e9f1ae8ef91056bf6ba49cd79f0869"
 }
 ~~~
 
@@ -980,7 +985,8 @@ Atributo | Descrição
 -------| --------
 idRegistro | identificador do registro
 timestamp | timestamp com a hora exata do pedido
-infos | vetor de strings com os detalhes do pedido para auditoria
+infos |  detalhes do pedido sendo auditado
+md5 |  hash do arquivo de log da operação
 
 ### Interface `Auditoria`
 
