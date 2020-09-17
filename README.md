@@ -244,19 +244,50 @@ Atributo | Descrição
 -------| --------
 `<nome do atributo>` | `<objetivo do atributo>`
 
-### Interface `Financeiro`
+### Interface Financeiro
 
-> Resumo do papel da interface.
+Interface para envio de relatório financeiro ao fornecedor 
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**: `pedido/{id}/dados`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
 ![Diagrama Classes REST](images/diagrama-classes-rest.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+  "number": 16,
+  "duoDate": "2009-10-04",
+  "total": 1937.01,
+  "items": {
+    "item": {
+       "itemid": "1245",
+       "quantity": 1
+    },
+    "item": {
+       "itemid": "1321",
+       "quantity": 1
+    }
+  }  
+}
 ~~~
+
+Detalhamento da mensagem JSON:
+
+**Order**
+Atributo | Descrição
+-------| --------
+number | número do pedido
+duoDate | data de vencimento
+total | valor total do pedido
+items | itens do pedido
+
+**Item**
+Atributo | Descrição
+-------| --------
+itemid | identificador do item
+quantity | quantidade do item
+
 
 Detalhamento da mensagem JSON:
 
