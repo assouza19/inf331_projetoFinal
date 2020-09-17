@@ -817,23 +817,62 @@ Atributo | Descrição
 
 ### Interface `Recomendados`
 
-> Resumo do papel da interface.
+> Interface para envio dos produtos recomendados a um usuario a partir de produtos escolhidos no pedido.
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**:  
+Assina: 
+`/produto/{id}/dados` 
+Publica: 
+`recomendados/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-relatorio-recomendacao.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+  "idRecomendacao": 3234,
+  "acuracia": 0.8,
+  "quantidadeProdutos": 5,
+  "produtos": {
+    "produto": {
+       "idProduto": "1245",
+	   "rankeamento": 1,
+    },
+    "produto": {
+       "idProduto": "3323",
+	   "rankeamento": 2,
+    },
+	"produto": {
+       "idProduto": "5555",
+	   "rankeamento": 3,
+    },
+	"produto": {
+       "idProduto": "9931",
+	   "rankeamento": 4,
+    },
+	"produto": {
+       "idProduto": "6633",
+	   "rankeamento": 5,
+    },
+  }  
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
+**Relatório Financeiro**
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+idRecomendacao | identificador da recomendacao
+acuracia | acuracia da recomendação 
+quantidadeProdutos | quantodade de produtos a serem recomendados
+
+**Produto**
+Atributo | Descrição
+-------| --------
+idProduto | identificador do produto
+rankeamento | rankeamento do produto pelo algoritmo de recomendação
 
 ### Interface `Leilão`
 
@@ -1115,6 +1154,7 @@ Classes que representam objetos JSON associados às mensagens da interface:
   "idRegistro": 23421,
   "timestamp": "2012-01-19 03:14:07",
   "infos": {
+	"operação": "Compra"
 	"quandidadeProdutos" : 2,
 	"idUsuario": 122333,
 	"valorTotal": 2233.23,
@@ -1129,8 +1169,8 @@ Detalhamento da mensagem JSON:
 Atributo | Descrição
 -------| --------
 idRegistro | identificador do registro
-timestamp | timestamp com a hora exata do pedido
-infos |  detalhes do pedido sendo auditado
+timestamp | timestamp com a hora exata da operação
+infos |  detalhes da operação sendo auditada
 md5 |  hash do arquivo de log da operação
 
 
@@ -1155,7 +1195,7 @@ Classes que representam objetos JSON associados às mensagens da interface:
 	"valorTotal": 2233.23,
   },
   "md5": "92e9f1ae8ef91056bf6ba49cd79f0869",
-  "isValidado": TRUE
+  "isValidado": TRUE,
 }
 ~~~
 
