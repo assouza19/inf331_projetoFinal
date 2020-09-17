@@ -103,7 +103,6 @@ Descrição dos componentes:
 
 > Componente responsável pelo processo de autenticação e persistência do Login no MarketPlace. Disponibiliza serviços como: Login, Logout, Recuperar a senha.
 
-![Componente](diagrama-componente-autenticacao.png)
 ![AutenticacaoComponent](images/Autenticacao.png)
 
 **Interfaces**
@@ -214,7 +213,6 @@ Atributo | Descrição
 
 > Este componente é responsável por gerenciar o fornecedor. Desde o cadastro, até manter seus dados atualizados.
 
-![Componente](diagrama-componente-fornecedor.png)
 ![FornecedorComponent](images/Fornecedor.png)
 
 **Interfaces**
@@ -354,7 +352,6 @@ Atributo | Descrição
 
 > Este componente é responsável por todo o fluxo do pedido. Desde quando o cliente encontra o produto desejado, visualiza sua descrição e o coloca no carrinho.
 
-![Componente](diagrama-componente-pedido.png)
 ![PedidoComponent](images/Pedido.png)
 
 **Interfaces**
@@ -431,7 +428,6 @@ Atributo | Descrição
 
 > Este componente é responsável pelo pagamento efetivo do pedido realizado. Dentre os serviços estão: Cálculo de frete, consulta do cadastro do usuário, consulta da instituição financeira responsável pelo pagamento e confirmação do pedido para o componente  de entrega.
 
-![Componente](diagrama-componente-pagamento.png)
 ![PagamentoComponent](images/Pagamento.png)
 
 **Interfaces**
@@ -573,7 +569,8 @@ Atributo | Descrição
 
 > <Resumo do papel do componente e serviços que ele oferece.>
 
-![Componente](diagrama-componente-mensagens.png)
+![FinanceiroComponent](images/Financeiro.png)
+
 
 **Interfaces**
 > * Listagem das interfaces do componente.
