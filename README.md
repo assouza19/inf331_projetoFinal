@@ -36,9 +36,8 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
   - Assina:
     > N/A
   - Publica:
-    > Responsável por dizer, através da interface recebida `Usuário`, se ele está autorizado ou não a realizar ações no sistema (como finalizar uma compra, cadastrar um produto, visualizar seus pedidos, etc). Essa interface `Usuário` é extendida por duas outras interfaces denominadas `Fornecedor` e `Cliente`. O componente de `Autenticação`, assim que verifica as validações necessárias,
-publica no barramento a mensagem de tópico `/autenticacao/cliente` ou `/autenticacao/fornecedor`, a depender do tipo de usuário enviado;
-    > Publica no barramento a mensagem de tópico `/auditoria/autenticacao` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+    > * Responsável por dizer, através da interface recebida `Usuário`, se ele está autorizado ou não a realizar ações no sistema (como finalizar uma compra, cadastrar um produto, visualizar seus pedidos, etc). Essa interface `Usuário` é extendida por duas outras interfaces denominadas `Fornecedor` e `Cliente`. O componente de `Autenticação`, assim que verifica as validações necessárias, publica no barramento a mensagem de tópico `/autenticacao/cliente` ou `/autenticacao/fornecedor`, a depender do tipo de usuário enviado;
+    > * Publica no barramento a mensagem de tópico `/auditoria/autenticacao` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
 
 
 * Componente `Cliente`:
