@@ -635,7 +635,7 @@ Classes que representam objetos JSON associados às mensagens da interface:
 			"largura": 22,
 			"comprimento": 33,
 			"altura": 45,
-	   }
+	   },
 	   "peso": 9.22,
     },
     "produto": {
@@ -645,7 +645,7 @@ Classes que representam objetos JSON associados às mensagens da interface:
 			"largura": 11,
 			"comprimento": 44,
 			"altura": 55,
-	   }
+	   },
 	   "peso": 8.12,
     },
   }  
@@ -660,7 +660,7 @@ Atributo | Descrição
 codRastreio | identificador da entrega e codigo de rastreio da entrega para o cliente.
 cpf | cpf do cliente (destinatario)
 cep | CEP do destino da entrega
-cep | número do destino da entrega
+numero | número do destino da entrega
 valor | valor cobrado pela transportadora pelo frete
 estimativaEntrega | data estimada para a entrega
 
