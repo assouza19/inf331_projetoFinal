@@ -265,7 +265,7 @@ Classes que representam objetos JSON associados às mensagens da interface:
     "inicio": "2009-10-04",
     "fim": "2009-11-04",
   },
-  "totalVendas": 1937.01,
+  "totalVendas": 6733.01,
   "quantidadeProdutos": 99,
   "produtos": {
     "produto": {
@@ -274,6 +274,7 @@ Classes que representam objetos JSON associados às mensagens da interface:
     },
     "produto": {
        "idProduto": "1245",
+	   "valor": 32.33
        "quantitidade": 1
     },
   }  
@@ -282,19 +283,20 @@ Classes que representam objetos JSON associados às mensagens da interface:
 
 Detalhamento da mensagem JSON:
 
-**Relatório**
+**Relatório Financeiro**
 Atributo | Descrição
 -------| --------
 idRelatorio | identificador do relatório
 cnpj | cnpj do fornecedor que solicitou o relatorio
 periodo | período a ser considerado para o a construção do relatório
 totalVendas | valor total do montante de vendas no período
-QuantidadeProdutos | quantidade produtos vendidos no período
+quantidadeProdutos | quantidade produtos vendidos no período
 
 **Produto**
 Atributo | Descrição
 -------| --------
-idProduto | identificador do produto.
+idProduto | identificador do produto
+valor | valor do produto
 quantidade | quantidade de determinado produto vendida no período
 
 ### Interface `Autenticação`
@@ -305,7 +307,7 @@ quantidade | quantidade de determinado produto vendida no período
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-relatorio-financeiro.png)
 
 ~~~json
 <Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
