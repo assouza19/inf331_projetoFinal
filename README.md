@@ -172,17 +172,21 @@ Assina:
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-usuario.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+  "id": 230,
+  "email": "joao@empresa.com"
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+`id` | `Identificador do usuário`
+`email` | `Endereço de e-mail`
 
 
 ## Componente `Cliente`
