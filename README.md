@@ -709,7 +709,7 @@ Assina:
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest-recomendacao.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-produtos-escolhidos.png)
 
 ~~~json
 {
