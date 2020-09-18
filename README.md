@@ -1564,44 +1564,28 @@ O detalhamento deve seguir um formato de acordo com o exemplo a seguir:
 
 Para cada componente será apresentado um documento conforme o modelo a seguir:
 
-## Componente `<Recomendação>`
+## Componente `Rankeamento Fornecedores`
 
 > <Resumo do papel do componente e serviços que ele oferece.>
 
 ![Componente](images/diagrama-componente.png)
 
 **Interfaces**
-> * Interface Produto
-> * Interface Recomendados
-> * Interface Leilão
-> * Interface ParticipaLeilão
+> * Ordena Forncedores
 
 As interfaces listadas são detalhadas a seguir:
 
 ## Detalhamento das Interfaces
 
-### Interface `<nome da interface>`
+### Interface `Ordena Forncedores`
 
-> ![Diagrama da Interface](images/diagrama-interface-itableproducer.png)
+> ![Diagrama da Interface](images/diagrama-interface-ordena-forencedores.png)
 
 > <Resumo do papel da interface.>
 
 Método | Objetivo
 -------| --------
-`<id do método>` | `<objetivo do método e descrição dos parâmetros>`
-
-## Exemplos:
-
-### Interface `IDataSetProperties`
-
-![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
-
-Define o recurso (usualmente o caminho para um arquivo em disco) que é a fonte de dados.
-
-Método | Objetivo
--------| --------
-`getDataSource` | Retorna o caminho da fonte de dados.
-`setDataSource` | Define o caminho da fonte de dados, informado através do parâmetro `dataSource`.
+`<id do método>` | `<objetivo do método e descrição dos parâmetros>`>`
 
 # Multiplas Interfaces
 
