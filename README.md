@@ -805,7 +805,7 @@ As interfaces listadas são detalhadas a seguir:
 
 ### Interface `Pagamento`
 
-> Interface para envio dos detalhes do pafamento.
+> Interface para envio dos detalhes do pagamento.
 
 **Tópico**:  
 Publica: 
@@ -1240,23 +1240,61 @@ peso | peso do produto em Kg
 
 ### Interface `Pagamento`
 
-> Resumo do papel da interface.
+> Interface para recebimento dos detalhes do pagamento.
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**:  
+Assina: 
+`pagamento/pedido/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-pagamento.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+  "idPagamento": 44323,
+  "cpf": 33242121233,
+  "dataPagamento": "2009-10-04",
+  "valor": 87.66,
+  "formaDePagamento": "Cartao de Credito",
+  "numeroParcelas": 9,
+  "statusPagamento": "Pendente",
+  "produtos": {
+    "produto": {
+       "idProduto": "1245",
+	   "valor": 55.33,
+       "quantitidade": 1
+    },
+    "produto": {
+       "idProduto": "3323",
+	   "valor": 32.33,
+       "quantitidade": 1
+    },
+  }  
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
+**Pagamento**
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+idPagamento | identificador do pagamento
+cpf | cpf do cliente
+dataPagamento | data da efetivação do pagamento
+valor | valor total do pedido
+formaDePagamento | forma de pagamento (cartao crédito, débito, boleto, etc)
+numeroParcelas | quantidade de parcelas, caso parcelado, valor default 1
+statusPagamento | status do pagamento (pendente, recusado, finalizado)
+
+**Produto**
+Atributo | Descrição
+-------| --------
+idProduto | identificador do produto
+valor | valor do produto
+quantidade | quantidade de determinado produto no pedido do cliente
+amento | status do pagamento (pendente, recusado, finalizado)
+
 
 ## Componente `Financeiro`
 
@@ -1347,23 +1385,60 @@ quantidade | quantidade de determinado produto vendida no período
 
 ### Interface `Pagamento`
 
-> Resumo do papel da interface.
+> Interface para recebimento dos detalhes do pagamento.
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**:  
+Assina: 
+`pagamento/pedido/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-pagamento.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+  "idPagamento": 44323,
+  "cpf": 33242121233,
+  "dataPagamento": "2009-10-04",
+  "valor": 87.66,
+  "formaDePagamento": "Cartao de Credito",
+  "numeroParcelas": 9,
+  "statusPagamento": "Pendente",
+  "produtos": {
+    "produto": {
+       "idProduto": "1245",
+	   "valor": 55.33,
+       "quantitidade": 1
+    },
+    "produto": {
+       "idProduto": "3323",
+	   "valor": 32.33,
+       "quantitidade": 1
+    },
+  }  
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
+**Pagamento**
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+idPagamento | identificador do pagamento
+cpf | cpf do cliente
+dataPagamento | data da efetivação do pagamento
+valor | valor total do pedido
+formaDePagamento | forma de pagamento (cartao crédito, débito, boleto, etc)
+numeroParcelas | quantidade de parcelas, caso parcelado, valor default 1
+statusPagamento | status do pagamento (pendente, recusado, finalizado)
+
+**Produto**
+Atributo | Descrição
+-------| --------
+idProduto | identificador do produto
+valor | valor do produto
+quantidade | quantidade de determinado produto no pedido do cliente
+
 
 ## Componente `Auditoria`
 
