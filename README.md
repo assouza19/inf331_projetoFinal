@@ -1455,7 +1455,7 @@ isValidado | resultado da validação da auditoria (true se sucesso, false caso 
 # Nível 2
 ## Diagrama do Nível 2
 
-![Diagrama Nível 2](images/Diagrama_nivel_2.png)
+![Diagrama Nível 2](images/Diagrama_nivel_2_v1.png)
 
 ### Detalhamento da interação de componentes
 
