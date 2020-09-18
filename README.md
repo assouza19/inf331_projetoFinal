@@ -137,17 +137,27 @@ Publica:
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-autenticacao.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+	"token": "MKT43242DSAD",
+  "idUsuario": 405,
+	"nome": "Carlos",
+	"autenticado": true
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
+
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+`token` | `Um hash gerado que expira quando o usuário deixa de interagir com o MarketPlace por muito tempo, forçando-o a logar novamente`
+`idUsuario` | `identificador único do usuário que foi autenticado (utilizado para logs, por exemplo)`
+`nome` | `Primeiro nome do usuário, para ser utilizado no front-end`
+`autenticado` | `Status da autenticação. Caso bem sucedida, retornará true. Caso não, retornará false (senha incorreta, e-mail inválido, usuário inexistente, etc)`
+
 
 ## Interface `Usuário`
 
@@ -199,7 +209,7 @@ Assina:
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-autenticacao-cliente.png)
 
 ~~~json
 {
@@ -215,7 +225,7 @@ Detalhamento da mensagem JSON:
 Atributo | Descrição
 -------| --------
 `token` | `Um hash gerado que expira quando o usuário deixa de interagir com o MarketPlace por muito tempo, forçando-o a logar novamente`
-`idCliente` | `identificador único do cliente que foi autenticado (utilizado para logs, por exemplo)`
+`idUsuario` | `identificador único do cliente que foi autenticado (utilizado para logs, por exemplo)`
 `nome` | `Primeiro nome do cliente, para ser utilizado no front-end`
 `autenticado` | `Status da autenticação. Caso bem sucedida, retornará true. Caso não, retornará false (senha incorreta, e-mail inválido, cliente inexistente, etc)`
 
@@ -393,7 +403,7 @@ Assina:
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-autenticacao-fornecedor.png)
 
 ~~~json
 {
