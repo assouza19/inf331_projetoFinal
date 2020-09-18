@@ -3,7 +3,7 @@
 A seguir é apresentada a estrutura de pastas do projeto:
 
 ~~~
-├── README.md 
+├── README.md
 │
 ├── images
 │
@@ -43,16 +43,16 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
 * Componente `Cliente`:
   - Assina:
   > * Assina no barramento mensagens de tópico "`/autenticacao/cliente/{id}`" através da interface `Autenticação`. Quando recebe a mensagem, se a autenticação tiver sido bem sucedida, o cliente estará logado e poderá prosseguir autenticado. Caso a autenticação tenha falhado, o usuário será redirecionado para uma nova tentativa;
-  - Publica: 
+  - Publica:
   > * Publica no barramento a mensagem de tópico "`/cliente/{id}`" ao logar no MarketPlace através da interface `Cliente`, permitindo a persistência dos dados;
   > * Publica no barramento a mensagem de tópico "`/auditoria/cliente/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação do usuário, como por exemplo, alteração dos dados cadastrais, alteração de senha, etc.
 
-* Componente `Fornecedor`: 
+* Componente `Fornecedor`:
   - Assina:
-  > * Assina no barramento mensagens de tópico "`/autenticacao/fornecedor/{id}`" através da interface `Autenticação`. Quando recebe a mensagem, se a autenticação tiver sido bem sucedida, o fornecedor estará logado e poderá prosseguir autenticado. Caso a autenticação tenha falhado, o fornecedor será redirecionado para uma nova tentativa. 
+  > * Assina no barramento mensagens de tópico "`/autenticacao/fornecedor/{id}`" através da interface `Autenticação`. Quando recebe a mensagem, se a autenticação tiver sido bem sucedida, o fornecedor estará logado e poderá prosseguir autenticado. Caso a autenticação tenha falhado, o fornecedor será redirecionado para uma nova tentativa.
   > * Assina no barramento mensagens de tópico "`/financeiro/transacoes`" através da interface `Financeiro`. Quando recebe a mensagem, o fornecedor terá acesso aos detalhes financeiros de suas transações dos pedidos como: acompanhamento das vendas, acompanhamento das entregas já efetuadas, notas fiscais emitidas, valores a serem repassados, entre outros.
   > * Assina no barramento mensagens de tópico "`/leilao/{id}/{idProduto}`" através da interface `Participa Leilão`. Quando recebe a mensagem, o fornecedor verificará os dados do produto requerido, sua disponibilidade em seu estoque e, caso haja interesse, fornecer uma oferta.
-  - Publica: 
+  - Publica:
   > * Publica no barramento a mensagem de tópico "`/fornecedor/{id}`" através da interface `Fornecedor` onde, quem assinar esse tópico, poderá ter acesso as informações do fornecedor.
   > * Publica no barramento a mensagem de tópico "`/leilao/{id}/{idFornecedor}/{oferta}`" através da interface `Leilão` onde o componente `Recomendação` poderá ter acesso a sua oferta ou recusa do leilão.
   > * Publica no barramento a mensagem de tópico "`/auditoria/fornecedor/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação do fornecedor, como por exemplo, cadastrar uma nova filial, mudar a razão social, etc.
@@ -60,7 +60,7 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
 * Componente `Produto`:
   - Assina:
     > * Assina no barramento mensagens de tópico "`/fornecedor/{id}`" através da interface `Fornecedor`. Quando ele recebe a mensagem, as informações do fornecedor são armazenadas e utilizadas em operações dos subcomponentes do componente `Produto`, como por exemplo, cadastrar um novo produto.
-  - Publica: 
+  - Publica:
     > * Publica no barramento mensagens de tópico "`/produto/{id}`" através da interface `Produto` sempre que um novo produto é adicionado ao carrinho.
     > * Publica no barramento mensagens de tópico "`/auditoria/produto/{id}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação com este produto como mudança de preço, mudança nos detalhes do produto ou quaisquer outras alterações pertinentes ao produto.
 
@@ -68,7 +68,7 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
   - Assina:
     > * Assina no barramento mensagens de tópico "`/produto/{id}`" através da interface `Produtos Escolhidos`. Toda vez que ele recebe essa mensagem, ele armazena o produto selecionado.
     > * Assina no barramento mensagens de tópico "`/cliente/{id}`" através da interface `Cliente`, que é onde os dados estão persistidos. Quando ele recebe a mensagem, ele relaciona o `{id}` do Cliente com o `{id}` dos fornecedores responsáveis pelos produtos selecionados que constam na interface `Produtos Escolhidos`.
-  - Publica: 
+  - Publica:
     > * Publica no barramento a mensagem de tópico "`/pedido/{id}`" através da interface `Pedido` sempre que um novo pedido é efetuado.
     > * Publica no barramento a mensagem de tópico "`/auditoria/pedido/{id}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação com o pedido em questão (mudança de status).
 
@@ -76,14 +76,14 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
   - Assina:
     > * Assina no barramento mensagens de tópico "`/pedido/{id}`" através da interface `Pedido`. Quando recebe a mensagem, inicializa o processo de realizar o pagamento do pedido em questão.
     > * Assina no barramento mensagens de tópico "`/cliente/{id}`" através da interface `Cliente`, que é onde os dados estão persistidos. Quando ele recebe a mensagem, ele relaciona os dados cadastrais do cliente no pedido, porém, dando a possibilidade do cliente mudá-lo caso necessário, por exemplo, quando o pagamento será realizado por outra pessoa que não o próprio cliente.
-  - Publica: 
+  - Publica:
     > * Publica no barramento a mensagem de tópico "`/pagamento/pedido/{id}`" através da interface `Pagamento` para notificar o componente `Entrega` do novo pedido e também ao componente `Financeiro` para emitir nota fiscal entre outros, caso tenha sido bem sucedido.
     > * Publica no barramento a mensagem de tópico "`/auditoria/pagamento/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação neste componente, como por exemplo, pagamento recusado, pagamento em análise, pagamento estornado, etc.
 
 * Componente `Entrega`:
   - Assina:
     > * Assina no barramento mensagens de tópico "`/pagamento/pedido/{id}`" através da interface `Pagamento`. Quando recebe a mensagem, inicializa o processo de `Entrega` dos produtos selecionados.
-  - Publica: 
+  - Publica:
     > * Publica no barramento as mensagens de tópico "`/entrega/{id}`" através da interface `Entrega` sempre que houver uma mudança no status do pedido.
     > * Publica no barramento a mensagem de tópico "`/auditoria/entrega/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação no componente de `Entrega`.
 
@@ -91,7 +91,7 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
   - Assina:
     > * Assina no barramento mensagens de tópico "`/produto/{id}`" através da interface `Produto`, que é disparado no momento em que o usuário define qual produto deseja adquirir, iniciando assim, o processo de leilão. Quando recebe a mensagem, o componente `Recomendação` informa todos os potenciais fornecedores do produto o interesse do cliente.
     > * Assina no barramento mensagens de tópico "`/leilao/{id}/{idFornecedor}/{oferta}`" através da interface `Participa Leilão` . Quando recebe uma mensagem, o componente `Recomendação` realiza o rankeamento dos fornecedores com base na oferta e no histórico dos mesmos.
-  - Publica: 
+  - Publica:
     > * Publica no barramento a mensagem de tópico "`/leilao/{id}/{idProduto}`" através da interface `Participa Leilão` para que o componente `Fornecedor` que tiver interesse seja notificado do leilão.
     > * Publica no barramento a mensagem de tópico "`/leilao/{id}/recomendados`" através da interface `Recomendados` o Rankeamento que será disponibilizado na camada de apresentação para o cliente solicitante.
     > * Publica no barramento a mensagem de tópico "`/auditoria/recomendacao/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
@@ -99,21 +99,21 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
 * Componente `Financeiro`:
   - Assina:
     > * Assina no barramento mensagens de tópico "`/pagamento/pedido/{id}`" através da interface `Pagamento`. Quando recebe a mensagem, o componente `Financeiro` armazena as informações do pedido efetuado, emite nota fiscal, atualiza dashboards e relatórios gerenciais.
-  - Publica: 
+  - Publica:
     > * Publica no barramento a mensagem de tópico "`/financeiro/transacoes`" através da interface `Financeiro` para notificar ao fornecedor que uma nova venda foi concretizada.
     > * Publica no barramento a mensagem de tópico "`/auditoria/financeiro/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
 
 * Componente `Auditoria`:
   - Assina:
     > * Responsável por assinar o barramento de mensagem de todas as ações que os componentes enviam ("`/auditoria/cliente/{id}/{acao}`", "`/auditoria/fornecedor/{id}/{acao}`", "`/auditoria/produto/{id}/{acao}`", "`/auditoria/pedido/{id}/{acao}`", "`/auditoria/pagamento/{id}/{acao}`", "`/auditoria/entrega/{id}/{acao}`", "`/auditoria/recomendacao/{id}/{acao}`", "`/auditoria/autenticacao/{id}/{acao}`" e "`/auditoria/financeiro/{id}/{acao}`") através da `Interface Registro`. Quando recebe uma mensage, o componente realiza a integração com banco de dados para armazenar o log da ação (dados como: quem fez ação, o que fez, em que data fez) para uma possível auditoria do Sistema;
-  - Publica: 
+  - Publica:
     > * N/A
 
 ### Detalhamento da interação no processo de leilão
 
 > Componente `Recomendação`
   > * Assina no barramento mensagens de tópico "`/produto/{id}`" através da interface `Produto`, que é disparado no momento em que o usuário define qual produto deseja adquirir, iniciando assim, o processo de leilão. Quando recebe a mensagem, o componente `Recomendação` informa todos os potenciais fornecedores do produto o interesse do cliente.
-  
+
   > * Publica no barramento a mensagem de tópico "`/leilao/{id}/{idProduto}`" através da interface `Participa Leilão` para que o componente `Fornecedor` que tiver interesse seja notificado do leilão.
 
   Após isso, a interação é por parte do fornecedor:
@@ -151,8 +151,8 @@ As interfaces listadas são detalhadas a seguir:
 > Essa interface é responsável por enviar o status da autenticação;
 
 **Tópico**:  
-Publica: 
-* `/autenticacao/cliente/{id}` 
+Publica:
+* `/autenticacao/cliente/{id}`
 * `/autenticacao/fornecedor/{id}`
 > A publicação do tópico correto dependerá do tipo de `Usuário` que está tentando se autenticar.
 
@@ -185,7 +185,7 @@ Atributo | Descrição
 > Esta é uma interface abstraída, pois a autenticação poderá ser feita tanto por fornecedor quanto por cliente.
 > Portanto, criamos essa interface "pai" que será extendida pelas interfaces `Cliente` e `Fornecedor`
 
-**Tópico**: 
+**Tópico**:
 Assina:
 * `/cliente/{id}`
 * `/fornecedor/{id}`
@@ -228,7 +228,7 @@ As interfaces listadas são detalhadas a seguir:
 
 > Essa interface é responsável por receber o status da autenticação que foi realizada no componente de `Autenticação`;
 
-**Tópico**: 
+**Tópico**:
 Assina:
 * `/autenticacao/cliente/{id}`
 
@@ -258,7 +258,7 @@ Atributo | Descrição
 
 > Esta interface é responsável por fornecer uma instância da interface `Cliente` com os dados do mesmo, que já foi autenticado, para uso posterior (por exemplo, efetivar uma compra).
 
-**Tópico**: 
+**Tópico**:
 Publica:
 * `/cliente/{id}`
 
@@ -323,7 +323,7 @@ As interfaces listadas são detalhadas a seguir:
 
 > Esta interface é responsável por fornecer uma instância da interface `Fornecedor` com os dados do mesmo, que já foi autenticado, para uso posterior (por exemplo, realizar o cadastro de um novo produto).
 
-**Tópico**: 
+**Tópico**:
 Publica:
 * `/fornecedor/{id}`
 
@@ -376,8 +376,8 @@ Atributo | Descrição
 > Interface que receberá as informações do `Financeiro`
 
 **Tópico**:  
-Assina: 
-* `/financeiro/transacoes` 
+Assina:
+* `/financeiro/transacoes`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -439,7 +439,7 @@ cnpj | cnpj do fornecedor que solicitou o relatorio
 periodo | período a ser considerado para o a construção do relatório
 totalVendas | valor total do montante de vendas no período
 quantidadeProdutos | quantidade produtos vendidos no período
-vendas | lista de pedidos, contendo os produtos e forma de pagamento realizadas dentro do período 
+vendas | lista de pedidos, contendo os produtos e forma de pagamento realizadas dentro do período
 
 **Produto**
 Atributo | Descrição
@@ -452,7 +452,7 @@ quantidade | quantidade de determinado produto vendida no período
 
 > Essa interface é responsável por receber o status da autenticação que foi realizada no componente de `Autenticação`;
 
-**Tópico**: 
+**Tópico**:
 Assina:
 * `/autenticacao/fornecedor/{id}`
 
@@ -512,7 +512,7 @@ Atributo | Descrição
 
 > Esta interface é responsável por receber um novo pedido de leilão. Nela constam informações do produto desejado.
 
-**Tópico**: 
+**Tópico**:
 Assina:
 * `/leilao/{id}/{idProduto}`
 
@@ -554,7 +554,7 @@ A interface listada será detalhada a seguir:
 
 > A interface produto é provida pelo componente com todos os detalhes do produto, tais como, categoria, fornecedor, precificação e também busca o produto referido no leilão de acordo com o fornecedor.
 
-**Tópico**: 
+**Tópico**:
 Publica:
 * `/produto/{id}`
 
@@ -600,7 +600,7 @@ Atributo | Descrição
 
 > Esta interface é responsável por fornecer uma instância da interface `Fornecedor` com os dados do mesmo, que já foi autenticado, para uso posterior (por exemplo, realizar o cadastro de um novo produto, ou para obter detalhes do fornecedor na tela de detalhes do produto).
 
-**Tópico**: 
+**Tópico**:
 Assina:
 * `/fornecedor/{id}`
 
@@ -668,7 +668,7 @@ As interfaces listadas são detalhadas a seguir:
 > Interface responsável pelo envio dos dados do pedido (incluindo descrição dos produtos escolhidos, cliente que realizou a compra e dados do fornecedor).
 
 **Tópico**:
-Publica: 
+Publica:
 * `pedido/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
@@ -722,10 +722,10 @@ Atributo | Descrição
 
 ### Interface `ProdutosEscolhidos`
 
-> Interface responsável por receber os produtos escolhidos pelo cliente, com base nas recomendações do leilão 
+> Interface responsável por receber os produtos escolhidos pelo cliente, com base nas recomendações do leilão
 
-**Tópico**: 
-Assina: 
+**Tópico**:
+Assina:
 * `/produto/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
@@ -764,8 +764,8 @@ Atributo | Descrição
 
 > Interface responsável por receber os dados do cliente.
 
-**Tópico**: 
-Assina: 
+**Tópico**:
+Assina:
 * `/cliente/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
@@ -829,7 +829,7 @@ As interfaces listadas são detalhadas a seguir:
 > Interface para envio dos detalhes do pagamento.
 
 **Tópico**:  
-Publica: 
+Publica:
 `pagamento/pedido/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
@@ -943,8 +943,8 @@ Atributo | Descrição
 
 > Interface responsável por receber os dados do cliente .
 
-**Tópico**: 
-Assina: 
+**Tópico**:
+Assina:
 * `cliente/#`
 
 Classes que representam objetos JSON associados às mensagens da interface:
@@ -1008,7 +1008,7 @@ As interfaces listadas são detalhadas a seguir:
 
 > A interface produto é recebida com todos os detalhes do produto, onde o componente `Recomendação` pegará somente o `titulo` do produto desejado para iniciar o processo de leilão.
 
-**Tópico**: 
+**Tópico**:
 Assina:
 * `/produto/{id}`
 
@@ -1055,7 +1055,7 @@ Atributo | Descrição
 > Interface para envio do Rankeamento  dos fornecedores com base no processamento do leilão, de acordo com o produto escolhido. Essa interface será utilizada na view para que o cliente seja capaz de escolher dentre os recomendados.
 
 **Tópico**:  
-Publica: 
+Publica:
 * `/leilao/{id}/recomendados`
 
 Classes que representam objetos JSON associados às mensagens da interface:
@@ -1108,7 +1108,7 @@ Detalhamento da mensagem JSON:
 Atributo | Descrição
 -------| --------
 idRecomendacao | identificador da recomendacao
-acuracia | acuracia da recomendação 
+acuracia | acuracia da recomendação
 quantidadeOfertas | quantidade de ofertas a serem publicadas para o cliente
 
 **Oferta**
@@ -1153,7 +1153,7 @@ Atributo | Descrição
 
 > Esta interface é responsável por enviar a mensagem aos fornecedores qualificados que um novo leilão iniciou.
 
-**Tópico**: 
+**Tópico**:
 Publica:
 * `/leilao/{id}/{idProduto}`
 
@@ -1196,9 +1196,9 @@ As interfaces listadas são detalhadas a seguir:
 > Interface para envio dos produtos efetivamente comprados.
 
 **Tópico**:  
-Assina: 
+Assina:
 `pedido/{id}/dados`
-Publica: 
+Publica:
 `etrega/{id}/dados`
 
 Classes que representam objetos JSON associados às mensagens da interface:
@@ -1264,7 +1264,7 @@ peso | peso do produto em Kg
 > Interface para recebimento dos detalhes do pagamento.
 
 **Tópico**:  
-Assina: 
+Assina:
 `pagamento/pedido/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
@@ -1337,9 +1337,9 @@ As interfaces listadas são detalhadas a seguir:
 > Interface para envio de relatório financeiro ao fornecedor.
 
 **Tópico**:  
-Assina: 
-`pedido/{id}/dados` 
-Publica: 
+Assina:
+`pedido/{id}/dados`
+Publica:
 `financeiro/relatorios/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
@@ -1409,7 +1409,7 @@ quantidade | quantidade de determinado produto vendida no período
 > Interface para recebimento dos detalhes do pagamento.
 
 **Tópico**:  
-Assina: 
+Assina:
 `pagamento/pedido/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
@@ -1480,7 +1480,7 @@ As interfaces listadas são detalhadas a seguir:
 > Interface para aquisição de logs para auditoria.
 
 **Tópico**:  
-Assina: 
+Assina:
 "`/auditoria/cliente/{id}/{acao}`", "`/auditoria/fornecedor/{id}/{acao}`", "`/auditoria/produto/{id}/{acao}`", "`/auditoria/pedido/{id}/{acao}`", "`/auditoria/pagamento/{id}/{acao}`", "`/auditoria/entrega/{id}/{acao}`", "`/auditoria/recomendacao/{id}/{acao}`", "`/auditoria/autenticacao/{id}/{acao}`" e "`/auditoria/financeiro/{id}/{acao}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
@@ -1517,8 +1517,8 @@ md5 |  hash do arquivo de log da operação
 > Interface para publicação do resultado da auditoria da operação
 
 **Tópico**:  
-Publica: 
-`auditoria/{id}/resultado` 
+Publica:
+`auditoria/{id}/resultado`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -1555,12 +1555,35 @@ isValidado | resultado da validação da auditoria (true se sucesso, false caso 
 
 ### Detalhamento da interação de componentes
 
-O detalhamento deve seguir um formato de acordo com o exemplo a seguir:
-
-* O componente `Entrega Pedido Compra` assina no barramento mensagens de tópico "`pedido/+/entrega`" através da interface `Solicita Entrega`.
-  * Ao receber uma mensagem de tópico "`pedido/+/entrega`", dispara o início da entrega de um conjunto de produtos.
-* Os componentes `Solicita Estoque` e `Solicita Compra` se comunicam com componentes externos pelo barramento:
-  * Para consultar o estoque, o componente `Solicita Estoque` publica no barramento uma mensagem de tópico "`produto/<id>/estoque/consulta`" através da interface `Consulta Estoque` e assina mensagens de tópico "`produto/<id>/estoque/status`" através da interface `Posição Estoque` que retorna a disponibilidade do produto.
+* Assina no barramento mensagens de tópico "`/produto/{id}`" através da interface "`Produto`", que é disparado no momento em que o usuário define qual produto deseja adquirir, iniciando assim, o processo de leilão:
+  * Ao receber uma mensagem de tópico "`/produto/{id}`", dispara o início do leilão entre os fornecedores.
+* O componente "`Rankeamento Fornecedores`" recebe os dados do produto a ser adquirido e aciona o componente "`Comunica Fornecedores`";
+* O componente "`Comunica Fornecedores`" recebe os dados do produto a ser adquirido e utiliza as interfaces externas para encontrar fornecedores interessados:
+  * Através da interface externa "`Comunicação`" este componente publica no barramento a mensagem de tópico "`/leilao/{id}/{idProduto}`" para que o componente "`Fornecedor`" que tiver interesse seja notificado do leilão;
+  * Como o componente externo assinou o barramento mensagens de tópico "`/leilao/{id}/{idFornecedor}/{oferta}`" através da interface `Participa Leilão`, ele recebe as ofertas dos fornecedores interessados através da interface requerida "`Fornecedores Interessados`";
+  * Quando  recebe uma mensagem através da interface `Participa Leilão`, esse componente envia as informações da oferta para o componente "`Rankeamento Fornecedores`".
+* Quando o componente "`Rankeamento Fornecedores`" recebe os dados de uma oferta vinda do componente "`Comunica Fornecedores`", ele realiza o rankeamento dos fornecedores com base na oferta e no histórico dos mesmos:
+  * Através da interface requerida "`Histórico Fornecedores`" este componente solicita o histórico do fornecedor que enviou a proposta.
+* O componente "`Model Recomendação`" recebe a solicitação de histórico do fornecedor através da interface provida "`Histórico Fornecedores`":
+  * Este componente encaminha a solicitação recebida para o sub-componente "`Monta Histórico`";
+* O componente "`Monta Histórico`" monta o histórico do fornecedor:
+  * Este componente envia uma solicitação para o componente "`DataSetComponent`" através da interface "`ITableProducer`";
+  * O componente "`ITableProducer`" acessa o banco de dados através dos dados da propriedade "`dataSource`" e busca os dados históricos do fornecedor;
+  * O componente "`ITableProducer`" retorna os dados para o componente "`Monta Histórico`" utilizando a interface "`ITableProducer`";
+  * O componente "`Monta Histórico`" normaliza os dados vindos do banco e monta o histórico do fornecedor;
+  * O componente "`Monta Histórico`" retorna o histórico do fornecedor.
+* O "`Model Recomendação`" retorna o histórico do usuário para o componente "`Controller Recomendação`" utilizando a interface "`Histórico Fornecedores`";
+* O componente "`Controller Recomendação`" recebe o histórico do fornecedor através da interface "`Histórico Fornecedores`":
+  * O componente "`Controller Recomendação`" encaminha o histórico do fornecedor para o sub-componente "`Rankeamento Fornecedores`".
+* O componente "`Rankeamento Fornecedores`" recebe o histórico do fornecedor e realiza o rankeamento dos fornecedores e, consequentemente, dos produtos recomendados:
+  * Esse componente utiliza os dados da oferta enviada pelo fornecedor em conjunto com o histórico para realizar o rankeamento;
+  * Esse componente precisa aguardar a chegada de um número mínimo de oferta, com um limite de tempo determinado, para realizar o rankeamento.
+* O componente "`Rankeamento Fornecedores`" retorna os produtos recomendados rankeados através da interface "`Produtos Recomendados`":
+  * O componente "`Controller Recomendação`" encaminha o retorno deste componente para o componente "`View Recomendação`".
+* O componente "`View Recomendação`" exibe os produtos recomendados de forma rankeada para o usuário:
+  * O componente "`View Recomendação`" encaminha a lista de produtos recomendados para o sub-componente "`Gerenciar Recomendados`";
+  * O componente "`Gerenciar Recomendados`" decodifica o retorno e repassa o resultado aos componentes "`Filtrar Recomendados`" e/ou "`Comparar Recomendados`";
+  * Os componentes "`Filtrar Recomendados`" e/ou "`Comparar Recomendados`" exibem os produtos recomendados rankeados para o cliente.
 
 Para cada componente será apresentado um documento conforme o modelo a seguir:
 
