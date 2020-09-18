@@ -1585,13 +1585,11 @@ isValidado | resultado da validação da auditoria (true se sucesso, false caso 
   * O componente "`Gerenciar Recomendados`" decodifica o retorno e repassa o resultado aos componentes "`Filtrar Recomendados`" e/ou "`Comparar Recomendados`";
   * Os componentes "`Filtrar Recomendados`" e/ou "`Comparar Recomendados`" exibem os produtos recomendados rankeados para o cliente.
 
-Para cada componente será apresentado um documento conforme o modelo a seguir:
-
 ## Componente `Rankeamento Fornecedores`
 
 > <Resumo do papel do componente e serviços que ele oferece.>
 
-![Componente](images/diagrama-componente.png)
+![Rankeamento](https://github.com/assouza19/inf331_projetoFinal/blob/master/images/Reankeamento%20-%20Nivel2.png)
 
 **Interfaces**
 > * Ordena Fornecedores
