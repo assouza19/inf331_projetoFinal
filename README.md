@@ -113,7 +113,7 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
 
 > Componente `Recomendação`
   > * Assina no barramento mensagens de tópico "`/produto/{id}`" através da interface `Produto`, que é disparado no momento em que o usuário define qual produto deseja adquirir, iniciando assim, o processo de leilão. Quando recebe a mensagem, o componente `Recomendação` informa todos os potenciais fornecedores do produto o interesse do cliente.
-  
+
   > * Publica no barramento a mensagem de tópico "`/leilao/{id}/{idProduto}`" através da interface `Participa Leilão` para que o componente `Fornecedor` que tiver interesse seja notificado do leilão.
 
   Após isso, a interação é por parte do fornecedor:
@@ -1264,7 +1264,7 @@ peso | peso do produto em Kg
 > Interface para recebimento dos detalhes do pagamento.
 
 **Tópico**:  
-Assina: 
+Assina:
 `pagamento/pedido/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
@@ -1409,7 +1409,7 @@ quantidade | quantidade de determinado produto vendida no período
 > Interface para recebimento dos detalhes do pagamento.
 
 **Tópico**:  
-Assina: 
+Assina:
 `pagamento/pedido/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
@@ -1554,8 +1554,6 @@ isValidado | resultado da validação da auditoria (true se sucesso, false caso 
 ![Diagrama Nível 2](images/Diagrama_nivel_2_v1.png)
 
 ### Detalhamento da interação de componentes
-
-O detalhamento deve seguir um formato de acordo com o exemplo a seguir:
 
 * Assina no barramento mensagens de tópico "`/produto/{id}`" através da interface "`Produto`", que é disparado no momento em que o usuário define qual produto deseja adquirir, iniciando assim, o processo de leilão:
   * Ao receber uma mensagem de tópico "`/produto/{id}`", dispara o início do leilão entre os fornecedores.
