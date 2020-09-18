@@ -130,7 +130,7 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
 > Componente `Recomendação`
   > * Assina no barramento mensagens de tópico "`/leilao/{id}/{idFornecedor}/{oferta}`" através da interface `Participa Leilão` . Quando recebe uma mensagem, o componente `Recomendação` realiza o rankeamento dos fornecedores com base na oferta e no histórico dos mesmos.
 
-Descrição dos componentes:
+# Descrição dos componentes:
 
 ## Componente `Autenticação`
 
