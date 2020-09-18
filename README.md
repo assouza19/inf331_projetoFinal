@@ -109,6 +109,27 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
   - Publica: 
     > * N/A
 
+### Detalhamento da interação no processo de leilão
+
+> Componente `Recomendação`
+  > * Assina no barramento mensagens de tópico "`/produto/{id}`" através da interface `Produto`, que é disparado no momento em que o usuário define qual produto deseja adquirir, iniciando assim, o processo de leilão. Quando recebe a mensagem, o componente `Recomendação` informa todos os potenciais fornecedores do produto o interesse do cliente.
+  
+  > * Publica no barramento a mensagem de tópico "`/leilao/{id}/{idProduto}`" através da interface `Participa Leilão` para que o componente `Fornecedor` que tiver interesse seja notificado do leilão.
+
+  Após isso, a interação é por parte do fornecedor:
+
+> Componente `Fornecedor`
+  > * Assina no barramento mensagens de tópico "`/leilao/{id}/{idProduto}`" através da interface `Participa Leilão`. Quando recebe a mensagem, o fornecedor verificará os dados do produto requerido, sua disponibilidade em seu estoque e, caso haja interesse, fornecer uma oferta.
+
+  Após o fornecedor decidir que vai participar, ocorre a seguinte interação:
+
+  > * Publica no barramento a mensagem de tópico "`/leilao/{id}/{idFornecedor}/{oferta}`" através da interface `Leilão` onde o componente `Recomendação` poderá ter acesso a sua oferta ou recusa do leilão.
+
+  Após a publicação da mensagem informando que o fornecedor deseja participar do leilão, ocorre a seguinte interação:
+
+> Componente `Recomendação`
+  > * Assina no barramento mensagens de tópico "`/leilao/{id}/{idFornecedor}/{oferta}`" através da interface `Participa Leilão` . Quando recebe uma mensagem, o componente `Recomendação` realiza o rankeamento dos fornecedores com base na oferta e no histórico dos mesmos.
+
 Descrição dos componentes:
 
 ## Componente `Autenticação`
