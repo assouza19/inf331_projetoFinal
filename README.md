@@ -1608,6 +1608,62 @@ Método | Objetivo
 -------| --------
 `<id do método>` | `<objetivo do método e descrição dos parâmetros>`>`
 
+## Componente `Comunica Fornecedores`
+
+> <Resumo do papel do componente e serviços que ele oferece.>
+
+![Rankeamento](https://github.com/assouza19/inf331_projetoFinal/blob/master/images/Comunica%20-%20Nivel2.png)
+
+**Interfaces**
+> * Interface Produto Selecionados
+> * Interface Fornecedores Participantes
+> * Interface Comunica Leilão
+> * Interface Fornecedores Recomendados
+
+As interfaces listadas são detalhadas a seguir:
+
+## Detalhamento das Interfaces
+
+### Interface `ProdutoSelecionados`
+
+> ![Diagrama da Interface](images/diagrama-interface-ordena-fornecedores.png)
+
+> <Resumo do papel da interface.>
+
+Método | Objetivo
+-------| --------
+`<id do método>` | `<objetivo do método e descrição dos parâmetros>`>`
+
+### Interface `FornecedoresParticipantes`
+
+> ![Diagrama da Interface](images/diagrama-interface-ordena-fornecedores.png)
+
+> <Resumo do papel da interface.>
+
+Método | Objetivo
+-------| --------
+`<id do método>` | `<objetivo do método e descrição dos parâmetros>`>`
+
+### Interface `ComunicaLeilao`
+
+> ![Diagrama da Interface](images/diagrama-interface-ordena-fornecedores.png)
+
+> <Resumo do papel da interface.>
+
+Método | Objetivo
+-------| --------
+`<id do método>` | `<objetivo do método e descrição dos parâmetros>`>`
+
+### Interface `FornecedoresRecomendados`
+
+> ![Diagrama da Interface](images/diagrama-interface-ordena-fornecedores.png)
+
+> <Resumo do papel da interface.>
+
+Método | Objetivo
+-------| --------
+`<id do método>` | `<objetivo do método e descrição dos parâmetros>`>`
+
 # Multiplas Interfaces
 
 > Escreva um texto detalhando como seus componentes  podem ser preparados para que seja possível trocar de interface apenas trocando o componente View e mantendo o Model e Controller.
