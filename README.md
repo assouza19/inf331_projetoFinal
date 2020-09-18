@@ -1475,7 +1475,10 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 ![Componente](images/diagrama-componente.png)
 
 **Interfaces**
-> * Listagem das interfaces do componente.
+> * Interface Produto
+> * Interface Recomendados
+> * Interface Leilão
+> * Interface ParticipaLeilão
 
 As interfaces listadas são detalhadas a seguir:
 
