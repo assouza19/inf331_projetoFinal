@@ -1594,7 +1594,7 @@ Para cada componente será apresentado um documento conforme o modelo a seguir:
 ![Componente](images/diagrama-componente.png)
 
 **Interfaces**
-> * Ordena Forncedores
+> * Ordena Fornecedores
 
 As interfaces listadas são detalhadas a seguir:
 
