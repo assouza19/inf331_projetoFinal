@@ -109,7 +109,28 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
   - Publica:
     > * N/A
 
-Descrição dos componentes:
+### Detalhamento da interação no processo de leilão
+
+> Componente `Recomendação`
+  > * Assina no barramento mensagens de tópico "`/produto/{id}`" através da interface `Produto`, que é disparado no momento em que o usuário define qual produto deseja adquirir, iniciando assim, o processo de leilão. Quando recebe a mensagem, o componente `Recomendação` informa todos os potenciais fornecedores do produto o interesse do cliente.
+  
+  > * Publica no barramento a mensagem de tópico "`/leilao/{id}/{idProduto}`" através da interface `Participa Leilão` para que o componente `Fornecedor` que tiver interesse seja notificado do leilão.
+
+  Após isso, a interação é por parte do fornecedor:
+
+> Componente `Fornecedor`
+  > * Assina no barramento mensagens de tópico "`/leilao/{id}/{idProduto}`" através da interface `Participa Leilão`. Quando recebe a mensagem, o fornecedor verificará os dados do produto requerido, sua disponibilidade em seu estoque e, caso haja interesse, fornecer uma oferta.
+
+  Após o fornecedor decidir que vai participar, ocorre a seguinte interação:
+
+  > * Publica no barramento a mensagem de tópico "`/leilao/{id}/{idFornecedor}/{oferta}`" através da interface `Leilão` onde o componente `Recomendação` poderá ter acesso a sua oferta ou recusa do leilão.
+
+  Após a publicação da mensagem informando que o fornecedor deseja participar do leilão, ocorre a seguinte interação:
+
+> Componente `Recomendação`
+  > * Assina no barramento mensagens de tópico "`/leilao/{id}/{idFornecedor}/{oferta}`" através da interface `Participa Leilão` . Quando recebe uma mensagem, o componente `Recomendação` realiza o rankeamento dos fornecedores com base na oferta e no histórico dos mesmos.
+
+# Descrição dos componentes:
 
 ## Componente `Autenticação`
 
@@ -467,7 +488,7 @@ Publica:
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-leilao.png)
 
 ~~~json
 {
@@ -497,7 +518,7 @@ Assina:
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-participaleilao.png)
 
 ~~~json
 {
@@ -709,7 +730,7 @@ Assina:
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest-recomendacao.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-produtos-escolhidos.png)
 
 ~~~json
 {
@@ -805,7 +826,7 @@ As interfaces listadas são detalhadas a seguir:
 
 ### Interface `Pagamento`
 
-> Interface para envio dos detalhes do pafamento.
+> Interface para envio dos detalhes do pagamento.
 
 **Tópico**:  
 Publica:
@@ -1108,7 +1129,7 @@ Assina:
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-leilao.png)
 
 ~~~json
 {
@@ -1138,7 +1159,7 @@ Publica:
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-participaleilao.png)
 
 ~~~json
 {
@@ -1240,23 +1261,61 @@ peso | peso do produto em Kg
 
 ### Interface `Pagamento`
 
-> Resumo do papel da interface.
+> Interface para recebimento dos detalhes do pagamento.
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**:  
+Assina: 
+`pagamento/pedido/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-pagamento.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+  "idPagamento": 44323,
+  "cpf": 33242121233,
+  "dataPagamento": "2009-10-04",
+  "valor": 87.66,
+  "formaDePagamento": "Cartao de Credito",
+  "numeroParcelas": 9,
+  "statusPagamento": "Pendente",
+  "produtos": {
+    "produto": {
+       "idProduto": "1245",
+	   "valor": 55.33,
+       "quantitidade": 1
+    },
+    "produto": {
+       "idProduto": "3323",
+	   "valor": 32.33,
+       "quantitidade": 1
+    },
+  }  
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
+**Pagamento**
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+idPagamento | identificador do pagamento
+cpf | cpf do cliente
+dataPagamento | data da efetivação do pagamento
+valor | valor total do pedido
+formaDePagamento | forma de pagamento (cartao crédito, débito, boleto, etc)
+numeroParcelas | quantidade de parcelas, caso parcelado, valor default 1
+statusPagamento | status do pagamento (pendente, recusado, finalizado)
+
+**Produto**
+Atributo | Descrição
+-------| --------
+idProduto | identificador do produto
+valor | valor do produto
+quantidade | quantidade de determinado produto no pedido do cliente
+amento | status do pagamento (pendente, recusado, finalizado)
+
 
 ## Componente `Financeiro`
 
@@ -1347,23 +1406,60 @@ quantidade | quantidade de determinado produto vendida no período
 
 ### Interface `Pagamento`
 
-> Resumo do papel da interface.
+> Interface para recebimento dos detalhes do pagamento.
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**:  
+Assina: 
+`pagamento/pedido/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-pagamento.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+  "idPagamento": 44323,
+  "cpf": 33242121233,
+  "dataPagamento": "2009-10-04",
+  "valor": 87.66,
+  "formaDePagamento": "Cartao de Credito",
+  "numeroParcelas": 9,
+  "statusPagamento": "Pendente",
+  "produtos": {
+    "produto": {
+       "idProduto": "1245",
+	   "valor": 55.33,
+       "quantitidade": 1
+    },
+    "produto": {
+       "idProduto": "3323",
+	   "valor": 32.33,
+       "quantitidade": 1
+    },
+  }  
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
+**Pagamento**
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+idPagamento | identificador do pagamento
+cpf | cpf do cliente
+dataPagamento | data da efetivação do pagamento
+valor | valor total do pedido
+formaDePagamento | forma de pagamento (cartao crédito, débito, boleto, etc)
+numeroParcelas | quantidade de parcelas, caso parcelado, valor default 1
+statusPagamento | status do pagamento (pendente, recusado, finalizado)
+
+**Produto**
+Atributo | Descrição
+-------| --------
+idProduto | identificador do produto
+valor | valor do produto
+quantidade | quantidade de determinado produto no pedido do cliente
+
 
 ## Componente `Auditoria`
 
@@ -1493,55 +1589,28 @@ O detalhamento deve seguir um formato de acordo com o exemplo a seguir:
 
 Para cada componente será apresentado um documento conforme o modelo a seguir:
 
-## Componente `<Recomendação>`
+## Componente `Rankeamento Fornecedores`
 
 > <Resumo do papel do componente e serviços que ele oferece.>
 
 ![Componente](images/diagrama-componente.png)
 
 **Interfaces**
-> * Interface Produto
-> * Interface Recomendados
-> * Interface Leilão
-> * Interface ParticipaLeilão
+> * Ordena Forncedores
 
 As interfaces listadas são detalhadas a seguir:
 
 ## Detalhamento das Interfaces
 
-### Interface `<nome da interface>`
+### Interface `Ordena Forncedores`
 
-> ![Diagrama da Interface](images/diagrama-interface-itableproducer.png)
+> ![Diagrama da Interface](images/diagrama-interface-ordena-forencedores.png)
 
 > <Resumo do papel da interface.>
 
 Método | Objetivo
 -------| --------
-`<id do método>` | `<objetivo do método e descrição dos parâmetros>`
-
-## Exemplos:
-
-### Interface `ITableProducer`
-
-![Diagrama da Interface](images/diagrama-interface-itableproducer.png)
-
-Interface provida por qualquer fonte de dados que os forneça na forma de uma tabela.
-
-Método | Objetivo
--------| --------
-`requestAttributes` | Retorna um vetor com o nome de todos os atributos (colunas) da tabela.
-`requestInstances` | Retorna uma matriz em que cada linha representa uma instância e cada coluna o valor do respectivo atributo (a ordem dos atributos é a mesma daquela fornecida por `requestAttributes`.
-
-### Interface `IDataSetProperties`
-
-![Diagrama da Interface](images/diagrama-interface-idatasetproperties.png)
-
-Define o recurso (usualmente o caminho para um arquivo em disco) que é a fonte de dados.
-
-Método | Objetivo
--------| --------
-`getDataSource` | Retorna o caminho da fonte de dados.
-`setDataSource` | Define o caminho da fonte de dados, informado através do parâmetro `dataSource`.
+`<id do método>` | `<objetivo do método e descrição dos parâmetros>`>`
 
 # Multiplas Interfaces
 
