@@ -850,19 +850,19 @@ Classes que representam objetos JSON associados às mensagens da interface:
 	"oferta": {
        "idProduto": 1123,
 	   "idFornecedor": 223344,
-	   "rankeamento": 1,
+	   "rankeamento": 3,
 	   "valor": 52.11,
     },
 	"oferta": {
        "idProduto": 3324,
 	   "idFornecedor": 122123,
-	   "rankeamento": 1,
+	   "rankeamento": 4,
 	   "valor": 55.11,
     },
 	"oferta": {
        "idProduto": 1245,
 	   "idFornecedor": 3342,
-	   "rankeamento": 1,
+	   "rankeamento": 5,
 	   "valor": 63.11,
     },
   }  
