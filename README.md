@@ -495,7 +495,7 @@ Publica:
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-produto.png)
 
 ~~~json
 {
@@ -541,17 +541,47 @@ Assina:
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-fornecedor.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+  "id": 562,
+  "razaoSocial": "Diversão Brinquedos LTDA",
+  "cpnj": "01009389000120",
+  "inscricaoEstadual": "139007230654",
+  "telefone": "1932459030",
+  "site": "www.diversaobrinquedos.com",
+  "endereco": {
+    "logradouro": "Rua XV de Novembro, 10",
+    "bairro": "Centro",
+    "cidade": "Campinas",
+    "uf": "SP",
+    "cep": "11810970",
+  },
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
+**Fornecedor**
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+`id` | `Identificador do fornecedor`
+`razaoSocial` | `Razão social do fornecedor`
+`cnpj` | `Número do CNPJ do fornecedor`
+`inscricaoEstadual` | `Número da inscrição estadual do fornecedor`
+`telefone` | `Telefone do fornecedor`
+`site` | `Endereço do site do fornecedor`
+`endereco` | `Informações do endereço do fornecedor`
+
+**Endereço**
+Atributo | Descrição
+-------| --------
+`logradouro` | `Logradouro do fornecedor`
+`bairro` | `Bairro do fornecedor`
+`cidade` | `Cidade do fornecedor`
+`uf` | `Estado do fornecedor`
+`cep` | `CEP do fornecedor`
 
 ## Componente `Pedido`
 
@@ -919,7 +949,7 @@ Assina:
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-produto.png)
 
 ~~~json
 {
