@@ -1634,6 +1634,16 @@ Método | Objetivo
 -------| --------
 `setProdutosEscolhidos` | Interface provida que recebe um Map que mapeia ID de produtos escolhidos pelo cliente a suas informações, ou seja, HashMap<IdProduto, values>. Esse Map é então processado internamente para que o componente comunique no barramento os produtos escolhidos para prosseguir o leilão (ComunicaLeilão).
 
+### Interface `ComunicaLeilao`
+
+> ![Diagrama da Interface](images/diagrama-interface-comunica-leilao.png)
+
+> Interface responável por comunicar no barramento os  barramento os produto(s) escolhidos para leilão.
+
+Método | Objetivo
+-------| --------
+`ComunicaLeilao` | Interface provida que retorna para o barramento um Map que mapeia o ID do produto particpante do leilão e informações relevantes para os fornecedores para participaram do leilão, como: "valor máximo", "localização", etc. Retorna: HashMap<IdProduto, values>
+
 ### Interface `FornecedoresParticipantes`
 
 > ![Diagrama da Interface](images/diagrama-interface-produtos-selecionados.png)
@@ -1644,15 +1654,6 @@ Método | Objetivo
 -------| --------
 `<id do método>` | `<objetivo do método e descrição dos parâmetros>`>`
 
-### Interface `ComunicaLeilao`
-
-> ![Diagrama da Interface](images/diagrama-interface-ordena-fornecedores.png)
-
-> <Resumo do papel da interface.>
-
-Método | Objetivo
--------| --------
-`<id do método>` | `<objetivo do método e descrição dos parâmetros>`>`
 
 ### Interface `FornecedoresRecomendados`
 
