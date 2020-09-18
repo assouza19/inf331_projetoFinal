@@ -1628,11 +1628,11 @@ As interfaces listadas são detalhadas a seguir:
 
 > ![Diagrama da Interface](images/diagrama-interface-produtos-selecionados.png)
 
-> <Resumo do papel da interface.>
+>Interface oferecida pelo componente Comunica Fornecedores para receber os Produtos que o cliente tem interesse.
 
 Método | Objetivo
 -------| --------
-`setProdutosEscolhidos` | Interface provida que recebe um Map que mapeia ID de produtos escolhidos pelo cliente a suas informações, ou seja, HashMap<IdProduto, values>. Esse Map é então processado internamente para que o componente comnique no barramento os produtos escolhidos para prosseguir o leilão (ComunicaLeilão).
+`setProdutosEscolhidos` | Interface provida que recebe um Map que mapeia ID de produtos escolhidos pelo cliente a suas informações, ou seja, HashMap<IdProduto, values>. Esse Map é então processado internamente para que o componente comunique no barramento os produtos escolhidos para prosseguir o leilão (ComunicaLeilão).
 
 ### Interface `FornecedoresParticipantes`
 
