@@ -1602,11 +1602,11 @@ As interfaces listadas são detalhadas a seguir:
 
 > ![Diagrama da Interface](images/diagrama-interface-ordena-fornecedores.png)
 
-> <Resumo do papel da interface.>
+> Interface oferecida pelo componente Rankeamento Fornecedores para ordenar uma lista de fornecedores interessados em vender um determinado produto no leilão. 
 
 Método | Objetivo
 -------| --------
-`<id do método>` | `<objetivo do método e descrição dos parâmetros>`>`
+`ordenaFornecedores` | Interface provida que recebe um HashMap <key, HashMap <key, value>> que mapeia ID de fornecedores a uma outra estrutrura de mapeamento com as informações relevantes do fornecedor para o leilão: valor da oferta, quandtidade de produtos disponiveis, localização. A mesma estrutura é retornada, porém com a propriedade adicional que "Ranking" que atribui a cada Fornedor uma posição com base na lógica interna do componente e no histórico desse fornecedor. 
 
 ## Componente `Comunica Fornecedores`
 
