@@ -833,27 +833,37 @@ Classes que representam objetos JSON associados às mensagens da interface:
 {
   "idRecomendacao": 3234,
   "acuracia": 0.8,
-  "quantidadeProdutos": 5,
-  "produtos": {
-    "produto": {
-       "idProduto": "1245",
+  "quantidadeOfertas": 5,
+  "ofertas": {
+    "oferta": {
+       "idProduto": 1245,
+	   "idFornecedor": 3342,
 	   "rankeamento": 1,
+	   "valor": 33.11
     },
-    "produto": {
-       "idProduto": "3323",
+    "oferta": {
+       "idProduto": 2332,
+	   "idFornecedor": 42432,
 	   "rankeamento": 2,
+	   "valor": 44.11,
     },
-	"produto": {
-       "idProduto": "5555",
-	   "rankeamento": 3,
+	"oferta": {
+       "idProduto": 1123,
+	   "idFornecedor": 223344,
+	   "rankeamento": 1,
+	   "valor": 52.11,
     },
-	"produto": {
-       "idProduto": "9931",
-	   "rankeamento": 4,
+	"oferta": {
+       "idProduto": 3324,
+	   "idFornecedor": 122123,
+	   "rankeamento": 1,
+	   "valor": 55.11,
     },
-	"produto": {
-       "idProduto": "6633",
-	   "rankeamento": 5,
+	"oferta": {
+       "idProduto": 1245,
+	   "idFornecedor": 3342,
+	   "rankeamento": 1,
+	   "valor": 63.11,
     },
   }  
 }
@@ -866,13 +876,15 @@ Atributo | Descrição
 -------| --------
 idRecomendacao | identificador da recomendacao
 acuracia | acuracia da recomendação 
-quantidadeProdutos | quantodade de produtos a serem recomendados
+quantidadeOfertas | quantidade de ofertas a serem publicadas para o cliente
 
-**Produto**
+**Oferta**
 Atributo | Descrição
 -------| --------
 idProduto | identificador do produto
+idFornecedor | identificador do fornecedor
 rankeamento | rankeamento do produto pelo algoritmo de recomendação
+valor | valor da oferta
 
 ### Interface `Leilão`
 
