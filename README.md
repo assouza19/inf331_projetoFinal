@@ -1381,7 +1381,7 @@ As interfaces listadas são detalhadas a seguir:
 
 **Tópico**:  
 Assina: 
-`pedido/{id}/dados` 
+"`/auditoria/cliente/{id}/{acao}`", "`/auditoria/fornecedor/{id}/{acao}`", "`/auditoria/produto/{id}/{acao}`", "`/auditoria/pedido/{id}/{acao}`", "`/auditoria/pagamento/{id}/{acao}`", "`/auditoria/entrega/{id}/{acao}`", "`/auditoria/recomendacao/{id}/{acao}`", "`/auditoria/autenticacao/{id}/{acao}`" e "`/auditoria/financeiro/{id}/{acao}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -1418,7 +1418,7 @@ md5 |  hash do arquivo de log da operação
 
 **Tópico**:  
 Publica: 
-`auditoria/{id}/dados` 
+`auditoria/{id}/resultado` 
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -1434,7 +1434,7 @@ Classes que representam objetos JSON associados às mensagens da interface:
 	"valorTotal": 2233.23,
   },
   "md5": "92e9f1ae8ef91056bf6ba49cd79f0869",
-  "isValidado": "TRUE",
+  "isValidado": "true",
 }
 ~~~
 
@@ -1446,7 +1446,7 @@ Atributo | Descrição
 idAuditoria | identificador do arquivo de auditoria
 infos |  detalhes da operação sendo auditadq
 md5 |  hash do arquivo de log da operação
-isValidado | resultado da auditoria (true se sucesso, false caso contrarío)
+isValidado | resultado da validação da auditoria (true se sucesso, false caso contrarío)
 
 # Nível 2
 ## Diagrama do Nível 2
