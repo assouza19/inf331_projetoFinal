@@ -34,7 +34,7 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
 
 * Componente `Autenticação`:
   - Assina:
-    > Assina no barramento mensagens de tópico "`/cliente/{id}`" e "`/fornecedor/{id}`" através da interface `Usuario`, pois ambos os usuários (`cliente` e `Fornecedor` são interfaces que extendem de `Usuário`). Depois de receber a mensagem, o componente `Autenticação` inicializa o processo de autenticação do usuário.
+    > * Assina no barramento mensagens de tópico "`/cliente/{id}`" e "`/fornecedor/{id}`" através da interface `Usuario`, pois ambos os usuários (`cliente` e `Fornecedor` são interfaces que extendem de `Usuário`). Depois de receber a mensagem, o componente `Autenticação` inicializa o processo de autenticação do usuário.
   - Publica:
     > * Responsável por dizer, através da interface recebida `Autenticação`, se ele está autorizado ou não a realizar ações no sistema (como finalizar uma compra, cadastrar um produto, visualizar seus pedidos, etc). Essa interface `Usuário` é extendida por duas outras interfaces denominadas `Fornecedor` e `Cliente`. O componente de `Autenticação`, assim que verifica as validações necessárias, publica no barramento a mensagem de tópico `/autenticacao/cliente/{id}` ou `/autenticacao/fornecedor/{id}`, a depender do tipo de usuário enviado;
     > * Publica no barramento a mensagem de tópico `/auditoria/autenticacao/{id}/{acao}` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
@@ -93,7 +93,7 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
     > * Assina no barramento mensagens de tópico "`/leilao/{id}/{idFornecedor}/{oferta}`" através da interface `Participa Leilão` . Quando recebe uma mensagem, o componente `Recomendação` realiza o rankeamento dos fornecedores com base na oferta e no histórico dos mesmos.
   - Publica: 
     > * Publica no barramento a mensagem de tópico "`/leilao/{id}/{idProduto}`" através da interface `Participa Leilão` para que o componente `Fornecedor` que tiver interesse seja notificado do leilão.
-    > * Publica no barramento a mensagem de tópico "`/leilao/{id}`" através da interface `Recomendados` o Rankeamento que será disponibilizado na camada de apresentação para o cliente solicitante.
+    > * Publica no barramento a mensagem de tópico "`/leilao/{id}/recomendados`" através da interface `Recomendados` o Rankeamento que será disponibilizado na camada de apresentação para o cliente solicitante.
     > * Publica no barramento a mensagem de tópico "`/auditoria/recomendacao/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
 
 * Componente `Financeiro`:
@@ -129,7 +129,11 @@ As interfaces listadas são detalhadas a seguir:
 
 > Essa interface é responsável por enviar o status da autenticação;
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**:  
+Publica: 
+* `/autenticacao/cliente/{id}` 
+* `/autenticacao/fornecedor/{id}`
+> A publicação do tópico correto dependerá do tipo de `Usuário` que está tentando se autenticar.
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -147,9 +151,14 @@ Atributo | Descrição
 
 ## Interface `Usuário`
 
-> Resumo do papel da interface.
+> Esta é uma interface abstraída, pois a autenticação poderá ser feita tanto por fornecedor quanto por cliente.
+> Portanto, criamos essa interface "pai" que será extendida pelas interfaces `Cliente` e `Fornecedor`
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**: 
+Assina:
+* `/cliente/{id}`
+* `/fornecedor/{id}`
+> A assinatura do tópico correto dependerá do tipo de `Usuário` que está tentando se autenticar.
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -168,7 +177,7 @@ Atributo | Descrição
 
 ## Componente `Cliente`
 
-> Este componente é responsável por todo o gerenciamento do Cliente. Serviços como: Manter o cadastro do cliente........
+> Este componente é responsável por todo o gerenciamento do Cliente. Serviços como: Manter o cadastro do cliente, visualizar seus pedidos, cadastrar endereços de entrega, etc.
 
 ![ClienteComponent](images/Cliente.png)
 
@@ -182,44 +191,81 @@ As interfaces listadas são detalhadas a seguir:
 
 ### Interface `Autenticação`
 
-> Resumo do papel da interface.
+> Essa interface é responsável por receber o status da autenticação que foi realizada no componente de `Autenticação`;
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**: 
+Assina:
+* `/autenticacao/cliente/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
 ![Diagrama Classes REST](images/diagrama-classes-rest.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+	"token": "MKT43242DSAD",
+	"idCliente": 543,
+	"nome": "Carlos",
+	"autenticado": true
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+`token` | `Um hash gerado que expira quando o usuário deixa de interagir com o MarketPlace por muito tempo, forçando-o a logar novamente`
+`idCliente` | `identificador único do cliente que foi autenticado (utilizado para logs, por exemplo)`
+`nome` | `Primeiro nome do cliente, para ser utilizado no front-end`
+`autenticado` | `Status da autenticação. Caso bem sucedida, retornará true. Caso não, retornará false (senha incorreta, e-mail inválido, cliente inexistente, etc)`
 
 ## Interface `Cliente`
 
-> Resumo do papel da interface.
+> Esta interface é responsável por fornecer uma instância da interface `Cliente` com os dados do mesmo, que já foi autenticado, para uso posterior (por exemplo, efetivar uma compra).
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**: 
+Publica:
+* `/cliente/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
-![Diagrama Classes REST](images/diagrama-classes-rest.png)
+![Diagrama Classes REST](images/diagrama-classes-rest-cliente.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+  "id": 1290,
+  "nome": "João Carlos Pereira",
+  "documento": "20038924860",
+  "tipoDePessoa": "PF",
+  "endereco": {
+    "logradouro": "Rua 13 de maio, 10",
+    "bairro": "Centro",
+    "cidade": "Itapira",
+    "uf": "SP",
+    "cep": "13970970",
+  },
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
+**Cliente**
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+`id` | `Identificador do cliente`
+`nome` | `Nome do cliente`
+`documento` | `Documento do cliente, podendo ser CPF ou CNPJ`
+`tipoDePessoa` | `Tipo de pessoa, podendo ser PF ou PJ`
+`endereco` | `Informações de endereço do cliente`
 
+**Endereço**
+Atributo | Descrição
+-------| --------
+`logradouro` | `Logradouro do cliente`
+`bairro` | `Bairro do cliente`
+`cidade` | `Cidade do cliente`
+`uf` | `Estado do cliente`
+`cep` | `CEP do cliente`
 
 ## Componente `Fornecedor`
 
@@ -240,9 +286,11 @@ As interfaces listadas são detalhadas a seguir:
 
 ### Interface `Fornecedor`
 
-> Resumo do papel da interface.
+> Esta interface é responsável por fornecer uma instância da interface `Fornecedor` com os dados do mesmo, que já foi autenticado, para uso posterior (por exemplo, realizar o cadastro de um novo produto).
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**: 
+Publica:
+* `/fornecedor/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -260,13 +308,11 @@ Atributo | Descrição
 
 ### Interface `Financeiro`
 
-> Interface para envio de relatório financeiro ao fornecedor.
+> Interface que receberá as informações do `Financeiro`
 
 **Tópico**:  
 Assina: 
-`pedido/{id}/dados` 
-Publica: 
-`financeiro/relatorios/{id}`
+* `/financeiro/transacoes` 
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -274,41 +320,47 @@ Classes que representam objetos JSON associados às mensagens da interface:
 
 ~~~json
 {
-  "idRelatorio": 23421,
-  "cnpj": 23242121233,
-  "periodo": {
-    "inicio": "2009-10-04",
-    "fim": "2009-11-04",
-  },
-  "totalVendas": 14200.00,
-  "quantidadeProdutos": 17,
-  "produtos": {
-    "produto": {
-       "idProduto": "1245",
-	   "valor": 2000.00,
-       "quantitidade": 4
-    },
-    "produto": {
-       "idProduto": "3323",
-	   "valor": 100.00,
-       "quantitidade": 2
-    },
-	"produto": {
-       "idProduto": "5555",
-	   "valor": 500.00,
-       "quantitidade": 4
-    },
-	"produto": {
-       "idProduto": "9931",
-	   "valor": 200.00,
-       "quantitidade": 5
-    },
-	"produto": {
-       "idProduto": "6633",
-	   "valor": 1500.00,
-       "quantitidade": 2
-    },
-  }  
+	"idRelatorio": 23421,
+	"cnpj": 23242121233,
+	"periodo": {
+		"inicio": "2009-10-04",
+		"fim": "2009-11-04"
+	},
+	"totalVendas": 14200.00,
+	"quantidadeProdutos": 17,
+	"vendas": [
+    {
+		"id": 1,
+    "pagamento": "dinheiro",
+		"produtos": [
+      {
+				"idProduto": "1245",
+				"valor": 2000.00,
+				"quantitidade": 4
+			},
+			{
+				"idProduto": "3323",
+				"valor": 100.00,
+				"quantitidade": 2
+			},
+			{
+				"idProduto": "5555",
+				"valor": 500.00,
+				"quantitidade": 4
+			},
+			{
+				"idProduto": "9931",
+				"valor": 200.00,
+				"quantitidade": 5
+			},
+			{
+				"idProduto": "6633",
+				"valor": 1500.00,
+				"quantitidade": 2
+			}
+		]
+	}
+]
 }
 ~~~
 
@@ -322,6 +374,7 @@ cnpj | cnpj do fornecedor que solicitou o relatorio
 periodo | período a ser considerado para o a construção do relatório
 totalVendas | valor total do montante de vendas no período
 quantidadeProdutos | quantidade produtos vendidos no período
+vendas | lista de pedidos, contendo os produtos e forma de pagamento realizadas dentro do período 
 
 **Produto**
 Atributo | Descrição
@@ -332,67 +385,95 @@ quantidade | quantidade de determinado produto vendida no período
 
 ### Interface `Autenticação`
 
-> Resumo do papel da interface.
+> Essa interface é responsável por receber o status da autenticação que foi realizada no componente de `Autenticação`;
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**: 
+Assina:
+* `/autenticacao/fornecedor/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
 ![Diagrama Classes REST](images/diagrama-classes-rest.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+	"token": "MKT43254787DSAD",
+	"idFornecedor": 231,
+	"razaoSocial": "Magazine Luiza SA",
+	"autenticado": true
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+`token` | `Um hash gerado que expira quando o usuário deixa de interagir com o MarketPlace por muito tempo, forçando-o a logar novamente`
+`idFornecedor` | `identificador único do fornecedor que foi autenticado (utilizado para logs, por exemplo)`
+`razaoSocial` | `Razão social do fornecedor logado para ser utilizado no front-end`
+`autenticado` | `Status da autenticação. Caso bem sucedida, retornará true. Caso não, retornará false (senha incorreta, e-mail inválido, fornecedor inexistente, etc)`
 
 ### Interface `Leilão`
 
-> Resumo do papel da interface.
+> Essa interface é responsável por avisar ao componente `Recomendação` se o fornecedor deseja participar do leilão, juntamente com o valor oferecido;
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**:
+Publica:
+* `/leilao/{id}/{idFornecedor}/{oferta}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
 ![Diagrama Classes REST](images/diagrama-classes-rest.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+	"idLeilao": 1,
+	"idFornecedor": 342,
+	"aceitaParticipar": true,
+	"lance": 200.0
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+`idLeilao` | `Fornecer ao componente Recomendação qual a referência do leilão`
+`idFornecedor` | `Fornecer ao componente Recomendação qual fornecedor respondeu sua mensagem`
+`aceitaParticipar` | `Informar ao componente Recomendação se deseja ou não participar do leilão`
+`lance` | `Caso aceite participar, deverá informar o lance oferecido para o produto em questão`
 
 ### Interface `ParticipaLeilão`
 
-> Resumo do papel da interface.
+> Esta interface é responsável por receber um novo pedido de leilão. Nela constam informações do produto desejado.
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**: 
+Assina:
+* `/leilao/{id}/{idProduto}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
 ![Diagrama Classes REST](images/diagrama-classes-rest.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+	"idLeilao": 432,
+	"idProduto": "A9842",
+	"descricaoProduto": "Televisão LG 50 polegadas"
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+`idLeilao` | `Fornecer ao componente Fornecedor qual a referência do leilão`
+`idProduto` | `Fornecer ao componente Fornecedor qual o identificador único do produto`
+`descricaoProduto` | `Descreve o produto desejado pelo cliente`
 
 ## Componente `Produto`
 
-> Este componente é responsável por manter os dados do produto, desde o cadastro do mesmo, como categorização......
+> Este componente é responsável por manter os dados do produto, desde o cadastro do mesmo, categorização, precificação, buscar o produto referido no leilão, etc.
 
 ![ProdutoComponent](images/Produto.png)
 
@@ -406,29 +487,57 @@ A interface listada será detalhada a seguir:
 
 ### Interface `Produto`
 
-> Resumo do papel da interface.
+> A interface produto é provida pelo componente com todos os detalhes do produto, tais como, categoria, fornecedor, precificação e também busca o produto referido no leilão de acordo com o fornecedor.
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**: 
+Publica:
+* `/produto/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
 ![Diagrama Classes REST](images/diagrama-classes-rest.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+	"id": 42,
+	"idCategoria": 231,
+	"idFornecedor": 123,
+	"idFabricante": 786,
+  "titulo": "Televisao LG",
+	"descricaoProduto": "Televisão Smart TV LG 50 polegadas com Wifi ",
+	"precoUnitario": 2500.00,
+	"imagens": [{
+			"url": "imagetelevisaoFrontal.png",
+			"contentDescription": "Foto da televisão de frente"
+		},
+		{
+			"url": "imagetelevisaoLateral.png",
+			"contentDescription": "Foto da televisão de lado"
+		}
+	]
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+`id` | `Identificador único do produto`
+`idCategoria` | `Identificador único da categoria do produto`
+`idFornecedor` | `Identificador único do fornecedor, para saber quem está fornecendo`
+`idFabricante` | `Identificador único do fabricante, para saber quem produziu o produto`
+`titulo` | `Titulo que aparecerá para o cliente antes que ele abra os detalhes`
+`descricaoProduto` | `Descreve o produto detalhadamente`
+`precoUnitario` | `Valor unitário`
+`imagens` | `Listagem das imagens que o produto possui`
 
 ### Interface `Fornecedor`
 
-> Resumo do papel da interface.
+> Esta interface é responsável por fornecer uma instância da interface `Fornecedor` com os dados do mesmo, que já foi autenticado, para uso posterior (por exemplo, realizar o cadastro de um novo produto, ou para obter detalhes do fornecedor na tela de detalhes do produto).
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**: 
+Assina:
+* `/fornecedor/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -461,10 +570,11 @@ As interfaces listadas são detalhadas a seguir:
 
 ### Interface `Pedido`
 
-> Interface responsável pelo envio do pedido de venda.
+> Interface responsável pelo envio dos dados do pedido (incluindo descrição dos produtos escolhidos, cliente que realizou a compra e dados do fornecedor).
 
 **Tópico**:
-Assina: `pedido/#` Publica: `pedido/{id}`
+Publica: 
+* `pedido/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -517,9 +627,11 @@ Atributo | Descrição
 
 ### Interface `ProdutosEscolhidos`
 
-> Interface responsável por receber os produtos recomendados do leilão 
+> Interface responsável por receber os produtos escolhidos pelo cliente, com base nas recomendações do leilão 
 
-**Tópico**: Assina: `recomendacao/pedido/#`
+**Tópico**: 
+Assina: 
+* `/produto/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -555,9 +667,11 @@ Atributo | Descrição
 
 ### Interface `Cliente`
 
-> Interface responsável por receber os dados do cliente .
+> Interface responsável por receber os dados do cliente.
 
-**Tópico**: Assina: `cliente/#`
+**Tópico**: 
+Assina: 
+* `/cliente/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -620,11 +734,8 @@ As interfaces listadas são detalhadas a seguir:
 > Interface para envio dos detalhes do pafamento.
 
 **Tópico**:  
-Assina: 
-`produto/{id}/dados`
-`cliente/{id}/dados` 
 Publica: 
-`pagamento/{id}/dados`
+`pagamento/pedido/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -677,10 +788,10 @@ quantidade | quantidade de determinado produto no pedido do cliente
 
 ### Interface `Pedido`
 
-> Interface responsável pelo recebimento do pedido de venda.
+> Interface responsável pelo recebimento do pedido, com todos os produtos selecionados pelo cliente.
 
 **Tópico**:
-Assina: `pedido/#`
+Assina: `/pedido/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -737,7 +848,9 @@ Atributo | Descrição
 
 > Interface responsável por receber os dados do cliente .
 
-**Tópico**: Assina: `cliente/#`
+**Tópico**: 
+Assina: 
+* `cliente/#`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -782,7 +895,7 @@ Atributo | Descrição
 
 ## Componente `Recomendação`
 
-> <Resumo do papel do componente e serviços que ele oferece.>
+> Este componente possui a principal função de orquestrar o processo de leilão, que envolve: Receber o produto desejado pelo cliente, notificar fornecedores de um novo leilão, buscar histórico dos mesmos, realizar o rankeamento e retornar para a camada de view as melhores opções de compra para o produto desejado.
 
 ![RecomendacaoComponent](images/Recomendacao.png)
 
@@ -798,33 +911,57 @@ As interfaces listadas são detalhadas a seguir:
 
 ### Interface `Produto`
 
-> Resumo do papel da interface.
+> A interface produto é recebida com todos os detalhes do produto, onde o componente `Recomendação` pegará somente o `titulo` do produto desejado para iniciar o processo de leilão.
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**: 
+Assina:
+* `/produto/{id}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
 ![Diagrama Classes REST](images/diagrama-classes-rest.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+	"id": 42,
+	"idCategoria": 231,
+	"idFornecedor": 123,
+	"idFabricante": 786,
+  "titulo": "Televisao LG",
+	"descricaoProduto": "Televisão Smart TV LG 50 polegadas com Wifi ",
+	"precoUnitario": 2500.00,
+	"imagens": [{
+			"url": "imagetelevisaoFrontal.png",
+			"contentDescription": "Foto da televisão de frente"
+		},
+		{
+			"url": "imagetelevisaoLateral.png",
+			"contentDescription": "Foto da televisão de lado"
+		}
+	]
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+`id` | `Identificador único do produto`
+`idCategoria` | `Identificador único da categoria do produto`
+`idFornecedor` | `Identificador único do fornecedor, para saber quem está fornecendo`
+`idFabricante` | `Identificador único do fabricante, para saber quem produziu o produto`
+`titulo` | `Titulo que aparecerá para o cliente antes que ele abra os detalhes`
+`descricaoProduto` | `Descreve o produto detalhadamente`
+`precoUnitario` | `Valor unitário`
+`imagens` | `Listagem das imagens que o produto possui`
 
 ### Interface `Recomendados`
 
-> Interface para envio dos produtos recomendados a um usuario a partir de produtos escolhidos no pedido.
+> Interface para envio do Rankeamento  dos fornecedores com base no processamento do leilão, de acordo com o produto escolhido. Essa interface será utilizada na view para que o cliente seja capaz de escolher dentre os recomendados.
 
 **Tópico**:  
-Assina: 
-`/produto/{id}/dados` 
 Publica: 
-`recomendados/{id}`
+* `/leilao/{id}/recomendados`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
@@ -889,43 +1026,61 @@ valor | valor da oferta
 
 ### Interface `Leilão`
 
-> Resumo do papel da interface.
+> Esta interface tem como objetivo receber a resposta que vier do Fornecedor, onde ele informará se aceita ou não o leilão, e caso sim, qual a sua oferta.
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**:
+Assina:
+* `/leilao/{id}/{idFornecedor}/{oferta}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
 ![Diagrama Classes REST](images/diagrama-classes-rest.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+	"idLeilao": 1,
+	"idFornecedor": 342,
+	"aceitaParticipar": true,
+	"lance": 200.0
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+`idLeilao` | `Fornecer ao componente Recomendação qual a referência do leilão`
+`idFornecedor` | `Fornecer ao componente Recomendação qual fornecedor respondeu sua mensagem`
+`aceitaParticipar` | `Campo em que o fornecedor escolhe ou não participar do leilão`
+`lance` | `Caso aceite participar, o lance oferecido para o produto em questão estará nesse campo`
 
 ### Interface `ParticipaLeilão`
 
-> Resumo do papel da interface.
+> Esta interface é responsável por enviar a mensagem aos fornecedores qualificados que um novo leilão iniciou.
 
-**Tópico**: `<tópico que a respectiva interface assina ou publica>`
+**Tópico**: 
+Publica:
+* `/leilao/{id}/{idProduto}`
 
 Classes que representam objetos JSON associados às mensagens da interface:
 
 ![Diagrama Classes REST](images/diagrama-classes-rest.png)
 
 ~~~json
-<Formato da mensagem JSON associada ao objeto enviado/recebido por essa interface.>
+{
+	"idLeilao": 432,
+	"idProduto": "A9842",
+	"descricaoProduto": "Televisão LG 50 polegadas"
+}
 ~~~
 
 Detalhamento da mensagem JSON:
 
 Atributo | Descrição
 -------| --------
-`<nome do atributo>` | `<objetivo do atributo>`
+`idLeilao` | `Fornecer ao componente Fornecedor qual a referência do leilão`
+`idProduto` | `Fornecer ao componente Fornecedor qual o identificador único do produto`
+`descricaoProduto` | `Descreve o produto desejado pelo cliente`
 
 ## Componente `Entrega`
 
