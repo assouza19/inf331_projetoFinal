@@ -1577,9 +1577,9 @@ As interfaces listadas são detalhadas a seguir:
 
 ## Detalhamento das Interfaces
 
-### Interface `Ordena Forncedores`
+### Interface `OrdenaFornecedores`
 
-> ![Diagrama da Interface](images/diagrama-interface-ordena-forencedores.png)
+> ![Diagrama da Interface](images/diagrama-interface-ordena-fornecedores.png)
 
 > <Resumo do papel da interface.>
 
