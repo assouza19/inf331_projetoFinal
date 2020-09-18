@@ -1606,7 +1606,7 @@ As interfaces listadas são detalhadas a seguir:
 
 Método | Objetivo
 -------| --------
-`ordenaFornecedores` | Interface provida que recebe um HashMap <key, HashMap <key, value>> que mapeia ID de fornecedores a uma outra estrutrura de mapeamento com as informações relevantes do fornecedor para o leilão: valor da oferta, quandtidade de produtos disponiveis, localização. A mesma estrutura é retornada, porém com a propriedade adicional que "Ranking" que atribui a cada Fornedor uma posição com base na lógica interna do componente e no histórico desse fornecedor. 
+`ordenaFornecedores` | Interface provida que recebe um HashMap <key, HashMap <key, value>> que mapeia ID de fornecedores a uma outra estrutrura de mapeamento com as informações relevantes do fornecedor para o leilão: valor da oferta, quantidade de produtos disponiveis, localização do fornecedor. A mesma estrutura é retornada, porém com a propriedade adicional que "Ranking" que atribui a cada Fornedor uma posição com base na lógica interna do componente e no histórico desse fornecedor. 
 
 ## Componente `Comunica Fornecedores`
 
@@ -1626,17 +1626,17 @@ As interfaces listadas são detalhadas a seguir:
 
 ### Interface `ProdutoSelecionados`
 
-> ![Diagrama da Interface](images/diagrama-interface-ordena-fornecedores.png)
+> ![Diagrama da Interface](images/diagrama-interface-produtos-selecionados.png)
 
 > <Resumo do papel da interface.>
 
 Método | Objetivo
 -------| --------
-`<id do método>` | `<objetivo do método e descrição dos parâmetros>`>`
+`setProdutosEscolhidos` | Interface provida que recebe um Map que mapeia ID de produtos escolhidos pelo cliente a suas informações, ou seja, HashMap<IdProduto, values>. Esse Map é então processado internamente para que o componente comnique no barramento os produtos escolhidos para prosseguir o leilão (ComunicaLeilão).
 
 ### Interface `FornecedoresParticipantes`
 
-> ![Diagrama da Interface](images/diagrama-interface-ordena-fornecedores.png)
+> ![Diagrama da Interface](images/diagrama-interface-produtos-selecionados.png)
 
 > <Resumo do papel da interface.>
 
