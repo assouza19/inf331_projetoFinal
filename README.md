@@ -34,9 +34,9 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
 
 * Componente `Autenticação`:
   - Assina:
-    > N/A
+    > Assina no barramento mensagens de tópico "`/cliente/{id}`" e "`/fornecedor/{id}`" através da interface `Usuario`, pois ambos os usuários (`cliente` e `Fornecedor` são interfaces que extendem de `Usuário`). Depois de receber a mensagem, o componente `Autenticação` inicializa o processo de autenticação do usuário.
   - Publica:
-    > * Responsável por dizer, através da interface recebida `Usuário`, se ele está autorizado ou não a realizar ações no sistema (como finalizar uma compra, cadastrar um produto, visualizar seus pedidos, etc). Essa interface `Usuário` é extendida por duas outras interfaces denominadas `Fornecedor` e `Cliente`. O componente de `Autenticação`, assim que verifica as validações necessárias, publica no barramento a mensagem de tópico `/autenticacao/cliente/{id}` ou `/autenticacao/fornecedor/{id}`, a depender do tipo de usuário enviado;
+    > * Responsável por dizer, através da interface recebida `Autenticação`, se ele está autorizado ou não a realizar ações no sistema (como finalizar uma compra, cadastrar um produto, visualizar seus pedidos, etc). Essa interface `Usuário` é extendida por duas outras interfaces denominadas `Fornecedor` e `Cliente`. O componente de `Autenticação`, assim que verifica as validações necessárias, publica no barramento a mensagem de tópico `/autenticacao/cliente/{id}` ou `/autenticacao/fornecedor/{id}`, a depender do tipo de usuário enviado;
     > * Publica no barramento a mensagem de tópico `/auditoria/autenticacao/{id}/{acao}` para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
 
 
@@ -77,7 +77,7 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
     > * Assina no barramento mensagens de tópico "`/pedido/{id}`" através da interface `Pedido`. Quando recebe a mensagem, inicializa o processo de realizar o pagamento do pedido em questão.
     > * Assina no barramento mensagens de tópico "`/cliente/{id}`" através da interface `Cliente`, que é onde os dados estão persistidos. Quando ele recebe a mensagem, ele relaciona os dados cadastrais do cliente no pedido, porém, dando a possibilidade do cliente mudá-lo caso necessário, por exemplo, quando o pagamento será realizado por outra pessoa que não o próprio cliente.
   - Publica: 
-    > * Publica no barramento a mensagem de tópico "`/pagamento/pedido/{id}`" através da interface `Pagamento` para notificar o componente `Entrega` do novo pedido, caso tenha sido bem sucedido.
+    > * Publica no barramento a mensagem de tópico "`/pagamento/pedido/{id}`" através da interface `Pagamento` para notificar o componente `Entrega` do novo pedido e também ao componente `Financeiro` para emitir nota fiscal entre outros, caso tenha sido bem sucedido.
     > * Publica no barramento a mensagem de tópico "`/auditoria/pagamento/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação neste componente, como por exemplo, pagamento recusado, pagamento em análise, pagamento estornado, etc.
 
 * Componente `Entrega`:
@@ -98,15 +98,16 @@ Para melhor compreensão das responsabilidades de cada um dos componentes observ
 
 * Componente `Financeiro`:
   - Assina:
-    > N/A
+    > * Assina no barramento mensagens de tópico "`/pagamento/pedido/{id}`" através da interface `Pagamento`. Quando recebe a mensagem, o componente `Financeiro` armazena as informações do pedido efetuado, emite nota fiscal, atualiza dashboards e relatórios gerenciais.
   - Publica: 
-    > Publica no barramento a mensagem de tópico "`/auditoria/financeiro/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
+    > * Publica no barramento a mensagem de tópico "`/financeiro/transacoes`" através da interface `Financeiro` para notificar ao fornecedor que uma nova venda foi concretizada.
+    > * Publica no barramento a mensagem de tópico "`/auditoria/financeiro/{id}/{acao}`" para que o componente de `Auditoria` seja notificado sempre que ocorrer uma ação.
 
 * Componente `Auditoria`:
   - Assina:
-    > Responsável por assinar o barramento de mensagem de todas as ações que os componentes enviam ("`/auditoria/cliente`", "`/auditoria/fornecedor`", "`/auditoria/produto`", "`/auditoria/pedido`", "`/auditoria/pagamento`", "`/auditoria/entrega`", "`/auditoria/recomendacao`", "`/auditoria/autenticacao`" e "`/auditoria/financeiro`") através da `Interface Registro`. Quando recebe uma mensage, o componente realiza a integração com banco de dados para armazenar o log da ação (dados como: quem fez ação, o que fez, em que data fez) para uma possível auditoria do Sistema;
+    > * Responsável por assinar o barramento de mensagem de todas as ações que os componentes enviam ("`/auditoria/cliente/{id}/{acao}`", "`/auditoria/fornecedor/{id}/{acao}`", "`/auditoria/produto/{id}/{acao}`", "`/auditoria/pedido/{id}/{acao}`", "`/auditoria/pagamento/{id}/{acao}`", "`/auditoria/entrega/{id}/{acao}`", "`/auditoria/recomendacao/{id}/{acao}`", "`/auditoria/autenticacao/{id}/{acao}`" e "`/auditoria/financeiro/{id}/{acao}`") através da `Interface Registro`. Quando recebe uma mensage, o componente realiza a integração com banco de dados para armazenar o log da ação (dados como: quem fez ação, o que fez, em que data fez) para uma possível auditoria do Sistema;
   - Publica: 
-    > N/A
+    > * N/A
 
 Descrição dos componentes:
 
