@@ -1223,14 +1223,9 @@ md5 |  hash do arquivo de log da operação
 isValidado | resultado da auditoria (true se sucesso, false caso contrarío)
 
 # Nível 2
-
-Apresente aqui o detalhamento do Nível 2 conforme detalhado na especificação com, no mínimo, as seguintes subseções:
-
 ## Diagrama do Nível 2
 
-Apresente um diagrama conforme o modelo a seguir:
-
-> ![Modelo de diagrama no nível 2](images/diagrama-subcomponentes.png)
+![Diagrama Nível 2](images/Diagrama_nivel_2.png)
 
 ### Detalhamento da interação de componentes
 
@@ -1243,7 +1238,7 @@ O detalhamento deve seguir um formato de acordo com o exemplo a seguir:
 
 Para cada componente será apresentado um documento conforme o modelo a seguir:
 
-## Componente `<Nome do Componente>`
+## Componente `<Recomendação>`
 
 > <Resumo do papel do componente e serviços que ele oferece.>
 
