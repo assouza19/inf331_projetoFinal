@@ -1656,13 +1656,13 @@ Método | Objetivo
 
 ### Interface `FornecedoresRecomendados`
 
-> ![Diagrama da Interface](images/diagrama-interface-ordena-fornecedores.png)
+> ![Diagrama da Interface](images/diagrama-interface-fornecedores-recomendados.png)
 
-> <Resumo do papel da interface.>
+> Interface provida responsável por comunicar os fornecedores recomendados baseado no rankeamento feito.
 
 Método | Objetivo
 -------| --------
-`<id do método>` | `<objetivo do método e descrição dos parâmetros>`>`
+`getFornecedoresRecomendados` | Interface provida que retorna para o barramento um Map com as ofertas recomendadas dos fornecedores após o rankeamento feito pelo componente de Rankeamento Fornecedores. Ou seja,retorna o mapemento do ID do fornecedores ordenados pelo ranking com suas respectivas ofertas: HashMap <IdFornecedor, HashMap <IdOferta, value>>
 
 # Multiplas Interfaces
 
