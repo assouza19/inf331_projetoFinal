@@ -6,8 +6,6 @@ A seguir é apresentada a estrutura de pastas do projeto:
 ├── README.md
 │
 ├── images
-│
-└── resources
 ~~~
 
 # Projeto `MarketPlace`
