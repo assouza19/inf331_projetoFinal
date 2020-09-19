@@ -1666,7 +1666,29 @@ Método | Objetivo
 
 # Multiplas Interfaces
 
-> Escreva um texto detalhando como seus componentes  podem ser preparados para que seja possível trocar de interface apenas trocando o componente View e mantendo o Model e Controller.
+> Para que nossos componentes suportem quantas interfaces distintas forem necessárias, optamos por utilizar a técnica de Modularização. Essa técnica é comumente utilizada em grandes projetos por justamente abstrairem blocos do seu código em módulos separados, de forma que possam ser reutilizadas em outros projetos, por exemplo.
+> Por exemplo, como os componentes de Model e Controller são estruturas compartilhadas entre as possibilidades de Views que possam surgir, o ideal é que fiquem em um módulo separado e assim, isolando o componente de banco de dados e de views em outros módulos individuais. Para exemplificar nossa arquitetura, utilizamos como base o cenário de que nosso MarketPlace suportará 3 interfaces: Aplicações Web, Android e iOS. Veja abaixo o detalhamento da arquitetura:
+
+## Detalhamento da arquitetura
+
+### Módulo de Model e Controller
+> Nesse módulo ocorrerá o tratamento dos dados e conterá as regras de negócio (Controller) e também toda a parte da comunicação com o `Database` (Model).
+  > * Para isso, utilizaremos a tecnologia `Sprint Framework`;
+> É nesse módulo também que ficará a camada de transferência de dados entre view/controller.
+  > * Para a transferência de dados utilizaremos a abordagem de `RESTful Service`;
+
+### Módulo de data base
+> Nesse módulo consideramos bastante a volatilidade dos nossos dados. Por exemplo: Uma determinada categoria de produto pode conter campos descritivos  que para outras categorias não faria sentido. Como por exemplo: Na categoria `livraria`, não faria sentido se tivessem atributos como `Voltagem` ou `Instruções de uso`.
+Da mesma forma, que mesmo vários produtos pertencendo a mesma categoria, pode haver necessidade de campos específicos em cada um deles. Levamos em consideração esta facilidade de adaptação, e também na performance no tráfego das nossas informações.
+  > * Por esse motivo, optamos por utilizar o `MongoDB com Sharding` que, com toda certeza, nos trará a versatilidade que buscamos, a performance que prezamos e ainda por cima é baseado em `JSON`, um formato totalmente leve e de fácil compreensão, que tem se tornado cada vez mais utilizado.
+
+### Views
+> A grande questão aqui foi realmente isolar toda a parte de view em módulos separados, para que cada tecnologia pudesse implementar sua interface levando em consideração a melhor abordagem para sua tecnologia, e que pudesse se comunicar com o módulo de `Model e Controller`, ocorrendo assim, a reutilização dos mesmos. Ou seja, para cada nova tecnologia que fosse necessária implementar, seria apenas criar um novo módulo de view e injetar o módulo de `Model e Controller` para sua utilização.
+  > * `Módulo WebApp`: Módulo criado para implementar as interfaces utilizando `Html`, `CSS` e `JavaScript`.
+  > * `Módulo Android`: Módulo criado para implementar as interfaces utilizando: `Kotlin`;
+  > * `Módulo iOS`: Módulo criado para implementar as interfaces utilizando: `swift`;
+
+Com essa abordagem de modularização, além de melhor distribuir as responsabilidades, também deixa nossos componentes mais estruturados para receber novas interfaces que surgirem. Da mesma forma se, caso algum dia seja necessário trocar o `MongoDB`, por estar em um módulo separado, o impacto nos demais módulos seria mínimo.
 >
 > ![Diagrama da Interface](images/diagrama-solucao-mvc.png)
 
