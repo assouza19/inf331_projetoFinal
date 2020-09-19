@@ -1642,18 +1642,17 @@ Método | Objetivo
 
 Método | Objetivo
 -------| --------
-`ComunicaLeilao` | Interface provida que retorna para o barramento um Map que mapeia o ID do produto particpante do leilão e informações relevantes para os fornecedores para participaram do leilão, como: "valor máximo", "localização", etc. Retorna: HashMap<IdProduto, values>
+`comunicaLeilao` | Interface provida que retorna para o barramento um Map que mapeia o ID do produto particpante do leilão e informações relevantes para os fornecedores para participaram do leilão, como: "valor máximo", "localização", etc. Retorna: HashMap<IdProduto, values>
 
 ### Interface `FornecedoresParticipantes`
 
-> ![Diagrama da Interface](images/diagrama-interface-produtos-selecionados.png)
+> ![Diagrama da Interface](images/diagrama-interface-fornecedores-participantes.png)
 
-> <Resumo do papel da interface.>
+> Interface provida responsável por receber as ofertas do forncedores interessados no leilão.
 
 Método | Objetivo
 -------| --------
-`<id do método>` | `<objetivo do método e descrição dos parâmetros>`>`
-
+`setOfertasFornecedores` | Interface provida que recebe um Map que mapeia ID de forncedores participantes às suas ofertas para o leião, ou seja, recebe um HashMap <IdFornecedor, HashMap <IdOferta, value>> . Esse Map é então armazendado internamente para que o componente processe ofertas e repeasse ao componente de Rankeamento os fornecedores e as ofertas dos mesmos para ordenação.
 
 ### Interface `FornecedoresRecomendados`
 
