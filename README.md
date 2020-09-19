@@ -1682,6 +1682,8 @@ Da mesma forma, que mesmo vários produtos pertencendo a mesma categoria, pode h
 
 ### Views
 > A grande questão aqui foi realmente isolar toda a parte de view em módulos separados, para que cada tecnologia pudesse implementar sua interface levando em consideração a melhor abordagem para sua tecnologia, e que pudesse se comunicar com o módulo de `Model e Controller`, ocorrendo assim, a reutilização dos mesmos. Ou seja, para cada nova tecnologia que fosse necessária implementar, seria apenas criar um novo módulo de view e injetar o módulo de `Model e Controller` para sua utilização.
+Para mantermos um certo nível de organização, também foi definido que, independente da interface, todas devem enviar `Request HTTP` e a resposta será por `HTML/JSON`. Dessa forma, não teremos surpresa como, por exemplo, retornar um tipo descohecido que um dos módulos pode não saber como tratar.
+
   > * `Módulo WebApp`: Módulo criado para implementar as interfaces utilizando `Html`, `CSS` e `JavaScript`.
   > * `Módulo Android`: Módulo criado para implementar as interfaces utilizando: `Kotlin`;
   > * `Módulo iOS`: Módulo criado para implementar as interfaces utilizando: `swift`;
