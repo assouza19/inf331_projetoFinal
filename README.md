@@ -1664,7 +1664,7 @@ Método | Objetivo
 
 # Multiplas Interfaces
 
-> Para que nossos componentes suportem quantas interfaces distintas forem necessárias, optamos por utilizar a técnica de Modularização. Essa técnica é comumente utilizada em grandes projetos por justamente abstrairem blocos do seu código em módulos separados, de forma que possam ser reutilizadas em outros projetos, por exemplo.
+> Para que nossos componentes suportem quantas interfaces distintas forem necessárias, optamos por utilizar a técnica de Modularização. Essa técnica é comumente utilizada em grandes projetos por justamente abstrairem blocos do seu código em módulos separados, de forma que possam ser reutilizadas em outros projetos ou módulos.
 > Por exemplo, como os componentes de Model e Controller são estruturas compartilhadas entre as possibilidades de Views que possam surgir, o ideal é que fiquem em um módulo separado e assim, isolando o componente de banco de dados e de views em outros módulos individuais. Para exemplificar nossa arquitetura, utilizamos como base o cenário de que nosso MarketPlace suportará 3 interfaces: Aplicações Web, Android e iOS. Veja abaixo o detalhamento da arquitetura:
 
 ## Detalhamento da arquitetura
